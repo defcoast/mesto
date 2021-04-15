@@ -6,3 +6,14 @@
 
 /* CONNECTED ROOT */
 @import url(../blocks/root/root.css);
+
+/* CONNECTED PAGE */
+@import url(../blocks/page/page.css);
+
+/* CONNECTED PAGE */
+@import url(../blocks/page/page.css);
+
+/* CONNECTED HEADER */
+@import url(../blocks/header/header.css);
+/* elements */
+@import url(../blocks/header/__logo/header__logo.css);
