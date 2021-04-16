@@ -13,7 +13,23 @@
 /* CONNECTED PAGE */
 @import url(../blocks/page/page.css);
 
+/* CONNECTED EDIT-BTN */
+@import url(../blocks/edit-btn/edit-btn.css);
+
+/* CONNECTED ADD-BTN */
+@import url(../blocks/add-btn/add-btn.css);
+
 /* CONNECTED HEADER */
 @import url(../blocks/header/header.css);
 /* elements */
 @import url(../blocks/header/__logo/header__logo.css);
+
+/* CONNECTED PROFILE */
+@import url(../blocks/profile/profile.css);
+/* elements */
+@import url(../blocks/profile/__row/profile__row.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__userbio/profile__userbio.css);
+@import url(../blocks/profile/__username/profile__username.css);
+@import url(../blocks/profile/__edit-btn/profile__edit-btn.css);
