@@ -22,6 +22,12 @@
 /* CONNECTED LIKE-BTN */
 @import url(../blocks/like-btn/like-btn.css);
 
+/* CONNECTED SAVE-BTN */
+@import url(../blocks/save-btn/save-btn.css);
+
+/* CLOSE-BTN */
+@import url(../blocks/close-btn/close-btn.css);
+
 /* CONNECTED HEADER */
 @import url(../blocks/header/header.css);
 /* elements */
@@ -51,3 +57,13 @@
 @import url(../blocks/footer/footer.css);
 /* elements */
 @import url(../blocks/footer/__copyright/footer__copyright.css);
+
+/* CONNECTED POPUP */
+@import url(../blocks/popup/popup.css);
+/* elements */
+@import url(../blocks/popup/__content/popup__content.css);
+@import url(../blocks/popup/__title/popup__title.css);
+@import url(../blocks/popup/__form/popup__form.css);
+@import url(../blocks/popup//__input/popup__input.css);
+@import url(../blocks/popup/__save-btn/popup__save-btn.css);
+@import url(../blocks/popup/__close-btn/popup__close-btn.css);

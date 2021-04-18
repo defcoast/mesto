@@ -1,0 +1,11 @@
+.close-btn {
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background: transparent url(../../images/Close-Icon.svg) center no-repeat;
+  background-size: 40px 40px;
+}
