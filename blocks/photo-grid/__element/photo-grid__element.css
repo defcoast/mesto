@@ -1,0 +1,6 @@
+.photo-grid__element {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -19,6 +19,9 @@
 /* CONNECTED ADD-BTN */
 @import url(../blocks/add-btn/add-btn.css);
 
+/* CONNECTED LIKE-BTN */
+@import url(../blocks/like-btn/like-btn.css);
+
 /* CONNECTED HEADER */
 @import url(../blocks/header/header.css);
 /* elements */
@@ -33,3 +36,13 @@
 @import url(../blocks/profile/__userbio/profile__userbio.css);
 @import url(../blocks/profile/__username/profile__username.css);
 @import url(../blocks/profile/__edit-btn/profile__edit-btn.css);
+
+/* CONNECTED PHOTO-GRID */
+@import url(../blocks/photo-grid/photo-grid.css);
+/* elements */
+@import url(../blocks/photo-grid/__elements/photo-grid__elements.css);
+@import url(../blocks/photo-grid/__element/photo-grid__element.css);
+@import url(../blocks/photo-grid//__image/photo-grid__image.css);
+@import url(../blocks/photo-grid/__caption/photo-grid__caption.css);
+@import url(../blocks/photo-grid/__title/photo-grid__title.css);
+@import url(../blocks/photo-grid/__like-btn/photo-grid__like-btn.css);
