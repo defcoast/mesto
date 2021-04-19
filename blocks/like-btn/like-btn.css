@@ -4,4 +4,9 @@
   background-color: #fff;
   outline: none;
   border: none;
+  cursor: pointer;
+  width: 22px;
+  height: 19px;
+  background: transparent url(../../images/like-icon.svg) center no-repeat;
+  background-size: 22px 19px;
 }
