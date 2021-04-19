@@ -9,3 +9,16 @@
   align-self: end;
   padding-right: 18px;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__username {
+    grid-column: 1/2;
+    grid-row: 3/4;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .profile__username {
+    font-size: 27px;
+  }
+}

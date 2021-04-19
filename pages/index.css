@@ -42,6 +42,7 @@
 @import url(../blocks/profile/__userbio/profile__userbio.css);
 @import url(../blocks/profile/__username/profile__username.css);
 @import url(../blocks/profile/__edit-btn/profile__edit-btn.css);
+@import url(../blocks/profile/__add-btn/profile__add-btn.css);
 
 /* CONNECTED PHOTO-GRID */
 @import url(../blocks/photo-grid/photo-grid.css);

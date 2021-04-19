@@ -7,3 +7,17 @@
   gap: 20px 17px;
   justify-content: center;
 }
+
+@media screen and (max-width: 900px) {
+  .photo-grid__elements {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 19px;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  .photo-grid__elements {
+    grid-template-columns: 1fr;
+    padding: 0 19px;
+  }
+}

@@ -10,3 +10,17 @@
   padding-left: 30px;
   padding-top: 16px;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__userbio {
+    grid-column: 1/2;
+    grid-row: 4/5;
+    padding-bottom: 36px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .profile__userbio {
+    font-size: 14px;
+  }
+}

@@ -5,3 +5,9 @@
   line-height: 1.22px;
   color: #545454;
 }
+
+@media screen and (max-width: 900px) {
+  .footer__copyright {
+    padding-left: 19px;
+  }
+}

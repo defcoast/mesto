@@ -2,3 +2,16 @@
   align-self: end;
   margin-bottom: 8px;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__edit-btn {
+    grid-row: 3/4;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .profile__edit-btn {
+    width: 14px;
+    height: 14px;
+  }
+}
