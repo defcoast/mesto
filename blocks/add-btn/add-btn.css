@@ -9,3 +9,7 @@
   background: transparent url(../../images/plus-icon.svg) center no-repeat;
   background-size: 22px 22px;
 }
+
+.add-btn:hover {
+  opacity: 0.6;
+}

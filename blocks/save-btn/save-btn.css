@@ -14,3 +14,7 @@
   outline: none;
   cursor: pointer;
 }
+
+.save-btn:hover {
+  opacity: 0.8;
+}

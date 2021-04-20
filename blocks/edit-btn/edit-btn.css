@@ -8,3 +8,7 @@
   background: transparent url(../../images/edit-icon.svg) center no-repeat;
   background-size: 10px 10px;
 }
+
+.edit-btn:hover {
+  opacity: 0.6;
+}

@@ -10,3 +10,12 @@
   background: transparent url(../../images/like-icon.svg) center no-repeat;
   background-size: 22px 19px;
 }
+
+.like-btn:hover {
+  opacity: 0.5;
+  transition: opacity 0.1s linear;
+}
+
+.like-btn:active {
+  background: transparent url(../../images/like-actib-btn.svg) center no-repeat;
+}

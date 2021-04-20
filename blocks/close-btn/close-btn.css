@@ -9,3 +9,7 @@
   background: transparent url(../../images/Close-Icon.svg) center no-repeat;
   background-size: 40px 40px;
 }
+
+.close-btn:hover {
+  opacity: 0.6;
+}
