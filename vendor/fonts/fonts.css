@@ -6,11 +6,11 @@
   font-weight: 400;
 }
 
-/* bold */
+/* medium */
 @font-face {
   font-family: "inter";
-  src: url(../fonts/inter/woff/Inter-Bold.woff) format("woff"),
-    url(../fonts/inter/woff2/Inter-Bold.woff2) format("woff2");
+  src: url(../fonts/inter/woff/Inter-Medium.woff) format("woff"),
+    url(../fonts/inter/woff2/Inter-Medium.woff2) format("woff2");
   font-weight: bold;
 }
 
