@@ -31,10 +31,10 @@
 /* CONNECTED HEADER */
 @import url(../blocks/header/header.css);
 /* elements */
-@import url(../blocks/header/__logo/header__logo.css);
+/* @import url(../blocks/header/__logo/header__logo.css); */
 
 /* CONNECTED PROFILE */
-@import url(../blocks/profile/profile.css);
+/* @import url(../blocks/profile/profile.css); */
 /* elements */
 @import url(../blocks/profile/__row/profile__row.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);

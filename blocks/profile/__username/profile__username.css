@@ -21,8 +21,11 @@
   }
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 590px) {
   .profile__username {
     font-size: 27px;
+    max-width: 189px;
+    padding-right: 10px;
+    padding-left: 0;
   }
 }
