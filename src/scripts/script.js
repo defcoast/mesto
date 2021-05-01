@@ -85,6 +85,8 @@ function addPlaceSubmitHandler (evt) {
   const gridTemplateImg = photoGridCard.querySelector('.photo-grid__image');
   const gridTemplateTitle = photoGridCard.querySelector('.photo-grid__title');
 
+  const delBtn = photoGridCard.querySelector('.del-btn');
+
   gridTemplateImg.src = linkInputValue;
   gridTemplateTitle.textContent = nameInputValue;
   
@@ -92,6 +94,10 @@ function addPlaceSubmitHandler (evt) {
 
   photoGridCard.querySelector('.like-btn').addEventListener('click', function (evt) {
     evt.target.classList.toggle('like-btn_active');
+  });
+
+  delBtn.addEventListener('click', function (evt) {
+    evt.target.closest('.photo-grid__element').remove();
   });
   
 }
@@ -104,6 +110,8 @@ function addStartingCards() {
   const gridTemplateTitle = photoGridCard.querySelector('.photo-grid__title');
   
   const currentItem = initialCards[i];
+    
+  const delBtn = photoGridCard.querySelector('.del-btn');
 
   gridTemplateImg.src = currentItem.link;
   gridTemplateTitle.textContent = currentItem.name
@@ -113,7 +121,11 @@ function addStartingCards() {
   photoGridCard.querySelector('.like-btn').addEventListener('click', function (evt) {
     evt.target.classList.toggle('like-btn_active');
   });
-   
+    
+  delBtn.addEventListener('click', function (evt) {
+    evt.target.closest('.photo-grid__element').remove();
+  });
+
   }
 
 }

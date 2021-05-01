@@ -30,6 +30,9 @@
 /* CLOSE-BTN */
 @import url(../blocks/close-btn/close-btn.css);
 
+/* DEL-BTN */
+@import url(../blocks/del-btn/del-btn.css);
+
 /* CONNECTED HEADER */
 @import url(../blocks/header/header.css);
 /* elements */
@@ -55,6 +58,7 @@
 @import url(../blocks/photo-grid/__caption/photo-grid__caption.css);
 @import url(../blocks/photo-grid/__title/photo-grid__title.css);
 @import url(../blocks/photo-grid/__like-btn/photo-grid__like-btn.css);
+@import url(../blocks/photo-grid/__del-btn/photo-grid__del-btn.css);
 
 /* CONNECTED FOOTER */
 @import url(../blocks/footer/footer.css);
