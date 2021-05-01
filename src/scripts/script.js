@@ -31,3 +31,47 @@ function formSubmitHandler (evt) {
 editButton.addEventListener('click', openAndClosePopup);
 closeButton.addEventListener('click', openAndClosePopup);
 formElement.addEventListener('submit', formSubmitHandler);
+
+
+//ДИНАМИЧЕСКИЕ КАРТОЧКИ
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+]; 
+
+const photoGridTemplate = document.querySelector('#photo-grid-template').content;
+const gridTemplateElements = document.querySelector('.photo-grid__elements');
+
+for (let i = 0; i < 6; i++) {
+  const photoGridCard = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
+  const gridTemplateImg = photoGridCard.querySelector('.photo-grid__image');
+  const gridTemplateTitle = photoGridCard.querySelector('.photo-grid__title');
+
+  gridTemplateImg.src = initialCards[i].link;
+  gridTemplateTitle.textContent = initialCards[i].name
+
+  gridTemplateElements.append(photoGridCard);
+  
+}
