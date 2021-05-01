@@ -21,6 +21,8 @@
 
 /* CONNECTED LIKE-BTN */
 @import url(../blocks/like-btn/like-btn.css);
+/* modify */
+@import url(../blocks/like-btn/_active/like-btn_active.css);
 
 /* CONNECTED SAVE-BTN */
 @import url(../blocks/save-btn/save-btn.css);

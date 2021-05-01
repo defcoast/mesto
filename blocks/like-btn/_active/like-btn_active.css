@@ -1,0 +1,4 @@
+.like-btn_active {
+  background: transparent url(../../../images/like-actib-btn.svg) center
+    no-repeat;
+}
