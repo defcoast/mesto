@@ -35,6 +35,7 @@
 
       <!-- photo-gird -->
       <section class="photo-grid">
+
         <ul class="photo-grid__elements">
           <template id="photo-grid-template">
             <li class="photo-grid__element">
@@ -46,58 +47,7 @@
             </li>
           </template>
         </ul>
-        <!-- 
-        <ul class="photo-grid__elements">
 
-          <li class="photo-grid__element">
-            <img src="./images/karachevsk.jpg" alt="Карачаевск" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Карачаевск</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-          <li class="photo-grid__element">
-            <img src="./images/elbrus.jpg" alt="Эльбрус" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Эльбрус</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-          <li class="photo-grid__element">
-            <img src="./images/dombay.jpg" alt="Домбай" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Домбай</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-          <li class="photo-grid__element">
-            <img src="./images/elbrus.jpg" alt="Эльбрус" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Эльбрус</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-          <li class="photo-grid__element">
-            <img src="./images/dombay.jpg" alt="Домбай" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Домбай</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-          <li class="photo-grid__element">
-            <img src="./images/karachevsk.jpg" alt="карачаево-черкесия" class="photo-grid__image">
-            <div class="photo-grid__caption">
-              <h2 class="photo-grid__title">Карачаево-Черкессия</h2>
-              <button type="button" class="like-btn photo-grid__like-btn"></button>
-            </div>
-          </li>
-
-        </ul> -->
       </section>
     </main>
 
@@ -112,12 +62,30 @@
   <div class="popup">
     <div class="popup__container">
       <button type="button" class="close-btn popup__close-btn"></button>
-      <h2 class="popup__title">Редактировать профиль</h2>
+      <h2 class="popup__title">
+        Редактировать профиль
+      </h2>
       <form action="#" name="userdata" class="popup__form">
         <input type="text" name="username" class="popup__input">
         <input type="text" name="userbio" class="popup__input">
         <button type="submit" class="save-btn popup__save-btn">
           Сохранить
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup" id="add-popup">
+    <div class="popup__container">
+      <button type="button" class="close-btn popup__close-btn" id="close-add-popup"></button>
+      <h2 class="popup__title">
+        Новое место
+      </h2>
+      <form action="#" name="new-place" class="popup__form" id="new-place">
+        <input type="text" name="name" class="popup__input" placeholder="Название">
+        <input type="text" name="link" class="popup__input" placeholder="Ссылка на картинку">
+        <button type="submit" class="save-btn popup__save-btn">
+          Создать
         </button>
       </form>
     </div>
