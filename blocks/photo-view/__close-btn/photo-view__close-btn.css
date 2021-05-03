@@ -1,0 +1,12 @@
+.photo-view__close-btn {
+  position: absolute;
+  top: -35px;
+  right: -34px;
+}
+
+@media screen and (max-width: 590px) {
+  .photo-view__close-btn {
+    top: -42px;
+    right: -5px;
+  }
+}

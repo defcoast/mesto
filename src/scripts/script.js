@@ -8,7 +8,7 @@ const editBtn = profile.querySelector('.profile__edit-btn');
 const profileUserName = profile.querySelector('.profile__username');
 const profileUserBio = profile.querySelector('.profile__userbio');
 
-// Подключение к блоку редактирования профиля
+// Подключение к  меню редактирования профиля
 const editProfileMenu = document.querySelector('#edit-popup');
 const closeProfileMenuBtn = editProfileMenu.querySelector('.popup__close-btn');
 const editProfileForm = editProfileMenu.querySelector('.popup__form');
@@ -22,6 +22,12 @@ const createCardBtn = createPlaceMenu.querySelector('.popup__save-btn');
 const closeCreateCardBtn = createPlaceMenu.querySelector('.popup__close-btn');
 const createMenuNameInput = createPlaceMenu.querySelector('#name');
 const createMenuLinkInput = createPlaceMenu.querySelector('#link');
+
+// Подключение к меню просмотра фото
+const photoView = document.querySelector('.photo-view');
+const photoViewImage = photoView.querySelector('.photo-view__image');
+const closePhotoViewBtn = photoView.querySelector('.photo-view__close-btn');
+const photoViewCaption = photoView.querySelector('.photo-view__caption');
 
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
@@ -66,9 +72,11 @@ function createCard(name, link) {
   let cardLink = card.querySelector('.photo-grid__image');
   const likeBtn = card.querySelector('.photo-grid__like-btn');
   const delBtn = card.querySelector('.photo-grid__del-btn');
+  const cardImage = card.querySelector('.photo-grid__image');
 
   cardTitle.textContent = name;
   cardLink.src = link;
+  cardImage.alt = cardTitle.textContent;
 
 //  like
   likeBtn.addEventListener('click', function (evt) {
@@ -78,6 +86,13 @@ function createCard(name, link) {
   //delete
   delBtn.addEventListener('click', function (evt) {
     evt.target.closest('.photo-grid__element').remove();
+  })
+
+  //open photo
+  cardImage.addEventListener('click', function (evt) {
+    photoView.classList.toggle('photo-view_opened');
+    photoViewImage.src = cardImage.src;
+    photoViewCaption.textContent = cardImage.alt;
   })
 
   return card;
@@ -166,3 +181,8 @@ closeProfileMenuBtn.addEventListener('click', function () {
 
 // Кнопка сохранить изменения в профиле
 editProfileForm.addEventListener('submit', editProfileHandler);
+
+// Кнопка закрыть изображение
+closePhotoViewBtn.addEventListener('click', function () {
+    photoView.classList.toggle('photo-view_opened');
+  })

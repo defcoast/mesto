@@ -81,3 +81,9 @@
 @import url(../blocks/photo-view/photo-view.css);
 /* elements */
 @import url(../blocks/photo-view/__container/photo-view__container.css);
+@import url(../blocks/photo-view/__image/photo-view__image.css);
+@import url(../blocks/photo-view/__close-btn/photo-view__close-btn.css);
+@import url(../blocks/photo-view/__caption/photo-view__caption.css);
+@import url(../blocks/photo-view/__figure/photo-view__figure.css);
+/* modify */
+@import url(../blocks/photo-view/_opened/photo-view_opened.css);

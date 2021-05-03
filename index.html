@@ -80,7 +80,7 @@
   <!-- place popup -->
   <div class="popup" id="add-popup">
     <div class="popup__container">
-      <button type="button" class="close-btn popup__close-btn" id="close-add-popup"></button>
+      <button type="button" class="close-btn popup__close-btn"></button>
       <h2 class="popup__title">
         Новое место
       </h2>
@@ -94,17 +94,19 @@
     </div>
   </div>
 
-  <!-- photo overlay -->
-  <template id="photo-view">
-    <div class="photo-view">
-      <div class="photo-view__container">
-        <img src="" alt="">
-      </div>
+  <!-- open-photo popup -->
+  <div class="photo-view">
+    <div class="photo-view__container">
+      <button class="close-btn photo-view__close-btn"></button>
+      <figure class="photo-view__figure">
+        <img src="#" alt="#" class="photo-view__image">
+        <figcaption class="photo-view__caption"></figcaption>
+      </figure>
+
     </div>
+  </div>
 
-  </template>
-
-  <script src="./src/scripts/sc.js"></script>
+  <script src="./src/scripts/script.js"></script>
 </body>
 
 </html>
