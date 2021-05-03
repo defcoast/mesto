@@ -9,3 +9,8 @@
   background: transparent url(../../images/Trash.svg) center no-repeat;
   background-size: 18px 19px;
 }
+
+.del-btn:hover {
+  opacity: 0.6;
+  transition: opacity 0.1s linear;
+}
