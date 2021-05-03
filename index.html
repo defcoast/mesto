@@ -39,7 +39,7 @@
         <ul class="photo-grid__elements">
           <template id="photo-grid-template">
             <li class="photo-grid__element">
-              <img src="./images/karachevsk.jpg" alt="Карачаевск" class="photo-grid__image">
+              <img src="./images/karachevsk.jpg" alt="фотография" class="photo-grid__image">
               <button class="del-btn photo-grid__del-btn"></button>
               <div class="photo-grid__caption">
                 <h2 class="photo-grid__title">Карачаевск</h2>
@@ -60,15 +60,16 @@
 
   </div>
 
-  <div class="popup">
+  <!-- edit popup -->
+  <div class="popup" id="edit-popup">
     <div class="popup__container">
       <button type="button" class="close-btn popup__close-btn"></button>
       <h2 class="popup__title">
         Редактировать профиль
       </h2>
       <form action="#" name="userdata" class="popup__form">
-        <input type="text" name="username" class="popup__input">
-        <input type="text" name="userbio" class="popup__input">
+        <input type="text" name="username" class="popup__input" id="username">
+        <input type="text" name="userbio" class="popup__input" id="userbio">
         <button type="submit" class="save-btn popup__save-btn">
           Сохранить
         </button>
@@ -76,15 +77,16 @@
     </div>
   </div>
 
+  <!-- place popup -->
   <div class="popup" id="add-popup">
     <div class="popup__container">
       <button type="button" class="close-btn popup__close-btn" id="close-add-popup"></button>
       <h2 class="popup__title">
         Новое место
       </h2>
-      <form action="#" name="new-place" class="popup__form" id="new-place">
-        <input type="text" name="name" class="popup__input" placeholder="Название">
-        <input type="text" name="link" class="popup__input" placeholder="Ссылка на картинку">
+      <form action="#" name="create-card" class="popup__form" id="new-place">
+        <input type="text" name="name" class="popup__input" id="name" placeholder="Название">
+        <input type="text" name="link" class="popup__input" id="link" placeholder="Ссылка на картинку">
         <button type="submit" class="save-btn popup__save-btn">
           Создать
         </button>
@@ -92,7 +94,17 @@
     </div>
   </div>
 
-  <script src="./src/scripts/script.js"></script>
+  <!-- photo overlay -->
+  <template id="photo-view">
+    <div class="photo-view">
+      <div class="photo-view__container">
+        <img src="" alt="">
+      </div>
+    </div>
+
+  </template>
+
+  <script src="./src/scripts/sc.js"></script>
 </body>
 
 </html>

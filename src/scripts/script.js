@@ -1,22 +1,32 @@
-const popup = document.querySelector('.popup');
-const addPopup = document.querySelector('#add-popup');
-const closeButton = popup.querySelector('.popup__close-btn');
-const closeAddPopupButton = addPopup.querySelector('#close-add-popup');
-const formElement = popup.querySelector('.popup__form');
-const nameInput = formElement.querySelector('[name="username"]');
-const jobInput = formElement.querySelector('[name="userbio"]');
+//ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
+// ---------------------------------------------------------------------
 
-const profile = document.querySelector('.profile')
-const editButton = profile.querySelector('.profile__edit-btn');
-const addButton = profile.querySelector('.profile__add-btn');
-const userName = profile.querySelector('.profile__username');
-const userBio = profile.querySelector('.profile__userbio');
+// Подключение к блоку PROFILE
+const profile = document.querySelector('.profile');
+const addBtn = profile.querySelector('.profile__add-btn');
+const editBtn = profile.querySelector('.profile__edit-btn');
+const profileUserName = profile.querySelector('.profile__username');
+const profileUserBio = profile.querySelector('.profile__userbio');
 
-const newPlaceForm = document.querySelector('#new-place');
+// Подключение к блоку редактирования профиля
+const editProfileMenu = document.querySelector('#edit-popup');
+const closeProfileMenuBtn = editProfileMenu.querySelector('.popup__close-btn');
+const editProfileForm = editProfileMenu.querySelector('.popup__form');
+const editProfileUserNameInput = editProfileForm.querySelector('#username');
+const editProfileUserBioInput = editProfileForm.querySelector('#userbio');
 
-const photoGridTemplate = document.querySelector('#photo-grid-template').content;
-const gridTemplateElements = document.querySelector('.photo-grid__elements');
+// Подключение к меню создания новой карточки
+const createPlaceMenu = document.querySelector('#add-popup');
+const createForm = createPlaceMenu.querySelector('.popup__form')
+const createCardBtn = createPlaceMenu.querySelector('.popup__save-btn');
+const closeCreateCardBtn = createPlaceMenu.querySelector('.popup__close-btn');
+const createMenuNameInput = createPlaceMenu.querySelector('#name');
+const createMenuLinkInput = createPlaceMenu.querySelector('#link');
 
+//Подключение к блоку с карточками
+const photoGridList = document.querySelector('.photo-grid__elements');
+
+//Массив с фотографиями
 const initialCards = [
   {
     name: 'Архыз',
@@ -42,102 +52,117 @@ const initialCards = [
     name: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
-]; 
+];
 
 
 
-function openAndClosePopup() {
-  popup.classList.toggle('popup_opened');
-  nameInput.value = userName.textContent;
-  jobInput.value = userBio.textContent;
+// ОБЪЯВЛЕНИЕ ФУНКЦИЙ
+// ---------------------------------------------------------------------
+
+function createCard(name, link) {
+  const photoGridTemplate = document.querySelector('#photo-grid-template').content;
+  const card = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
+  let cardTitle = card.querySelector('.photo-grid__title');
+  let cardLink = card.querySelector('.photo-grid__image');
+  const likeBtn = card.querySelector('.photo-grid__like-btn');
+  const delBtn = card.querySelector('.photo-grid__del-btn');
+
+  cardTitle.textContent = name;
+  cardLink.src = link;
+
+//  like
+  likeBtn.addEventListener('click', function (evt) {
+    evt.target.classList.toggle('like-btn_active');
+  });
+
+  //delete
+  delBtn.addEventListener('click', function (evt) {
+    evt.target.closest('.photo-grid__element').remove();
+  })
+
+  return card;
 }
 
-function openAndCloseAddPopup() {
-  addPopup.classList.toggle('popup_opened');
 
+function pushStartingCards() {
+  const startingCards = [];
+
+    initialCards.forEach(function (item) {
+      startingCards.push(createCard(item.name, item.link));
+    });
+    
+    startingCards.forEach(function (item) {
+       photoGridList.append(item)
+    })
 }
 
-function formSubmitHandler (evt) {
-    evt.preventDefault();
 
-  const nameInputValue = nameInput.value;
-  const jobInputValue =  jobInput.value;
-
-  userName.textContent = nameInputValue;
-  userBio.textContent = jobInputValue;
-
-  openAndClosePopup();
+function openCloseTurn(popupName) {
+  popupName.classList.toggle('popup_opened');
 }
 
-function addPlaceSubmitHandler (evt) {
+
+// ФУНКЦИИ-ОБРАБОТЧИКИ СОБЫТИЙ
+
+function createCardHandler(evt) {
   evt.preventDefault();
-  
-  const newPlaceForm = document.querySelector('#new-place');
-  const nameInput = newPlaceForm.querySelector('[name="name"]');
-  const linkInput = newPlaceForm.querySelector('[name="link"]');
 
-  const nameInputValue = nameInput.value;
-  const linkInputValue =  linkInput.value;
+  createPlaceMenu.classList.toggle('popup_opened');
 
-  openAndCloseAddPopup();
-
-  const photoGridCard = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
-  const gridTemplateImg = photoGridCard.querySelector('.photo-grid__image');
-  const gridTemplateTitle = photoGridCard.querySelector('.photo-grid__title');
-
-  const delBtn = photoGridCard.querySelector('.del-btn');
-
-  gridTemplateImg.src = linkInputValue;
-  gridTemplateTitle.textContent = nameInputValue;
-  
-  gridTemplateElements.prepend(photoGridCard);
-
-  photoGridCard.querySelector('.like-btn').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('like-btn_active');
-  });
-
-  delBtn.addEventListener('click', function (evt) {
-    evt.target.closest('.photo-grid__element').remove();
-  });
-  
-}
-
-function addStartingCards() {
-
-  for (let i = 0; i < 6; i++) {
-  const photoGridCard = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
-  const gridTemplateImg = photoGridCard.querySelector('.photo-grid__image');
-  const gridTemplateTitle = photoGridCard.querySelector('.photo-grid__title');
-  
-  const currentItem = initialCards[i];
-    
-  const delBtn = photoGridCard.querySelector('.del-btn');
-
-  gridTemplateImg.src = currentItem.link;
-  gridTemplateTitle.textContent = currentItem.name
-
-  gridTemplateElements.append(photoGridCard);
-  
-  photoGridCard.querySelector('.like-btn').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('like-btn_active');
-  });
-    
-  delBtn.addEventListener('click', function (evt) {
-    evt.target.closest('.photo-grid__element').remove();
-  });
-
-  }
+  photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
 }
 
+function editProfileHandler(evt) {
+  evt.preventDefault();
 
-addStartingCards();
+  openCloseTurn(editProfileMenu);
 
-editButton.addEventListener('click', openAndClosePopup);
-closeButton.addEventListener('click', openAndClosePopup);
-formElement.addEventListener('submit', formSubmitHandler);
+  profileUserName.textContent = editProfileUserNameInput.value;
+  profileUserBio.textContent = editProfileUserBioInput.value;
+}
 
-addButton.addEventListener('click', openAndCloseAddPopup);
-closeAddPopupButton.addEventListener('click', openAndCloseAddPopup);
-newPlaceForm.addEventListener('submit', addPlaceSubmitHandler);
 
+
+// ВЫЗОВ ФУНКЦИЙ
+// ---------------------------------------------------------------------
+
+createCard();
+pushStartingCards();
+
+
+
+//ОБЪЯВЛЕНИЕ СЛУШАТЕЛЕЙ
+// ---------------------------------------------------------------------
+
+// Кнопка Добавить карточку
+addBtn.addEventListener('click', function () {
+  openCloseTurn(createPlaceMenu);
+  createMenuNameInput.value = ''
+  createMenuLinkInput.value = ''
+
+});
+
+// Кнопка закрыть меню добавления карточки
+closeCreateCardBtn.addEventListener('click', function () {
+  openCloseTurn(createPlaceMenu);
+});
+
+// Кнопка создать новую карточку
+createForm.addEventListener('submit', createCardHandler);
+
+
+// Кнопка редактировать профиль
+editBtn.addEventListener('click', function () {
+  openCloseTurn(editProfileMenu);
+  editProfileUserNameInput.value = profileUserName.textContent;
+  editProfileUserBioInput.value = profileUserBio.textContent;
+});
+
+// Кнопка закрыть меню редактирования профиля
+closeProfileMenuBtn.addEventListener('click', function () {
+  openCloseTurn(editProfileMenu);
+});
+
+// Кнопка сохранить изменения в профиле
+editProfileForm.addEventListener('submit', editProfileHandler);
