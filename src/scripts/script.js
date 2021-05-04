@@ -24,10 +24,10 @@ const createMenuNameInput = createPlaceMenu.querySelector('#name');
 const createMenuLinkInput = createPlaceMenu.querySelector('#link');
 
 // Подключение к меню просмотра фото
-const photoView = document.querySelector('.photo-view');
-const photoViewImage = photoView.querySelector('.photo-view__image');
-const closePhotoViewBtn = photoView.querySelector('.photo-view__close-btn');
-const photoViewCaption = photoView.querySelector('.photo-view__caption');
+const photoView = document.querySelector('#view-popup');
+const photoViewImage = photoView.querySelector('.popup__image');
+const closePhotoViewBtn = photoView.querySelector('.popup__close-btn');
+const photoViewCaption = photoView.querySelector('.popup__caption');
 
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
@@ -63,7 +63,7 @@ function createCard(name, link) {
 
   //open photo
   cardImage.addEventListener('click', function (evt) {
-    photoView.classList.toggle('photo-view_opened');
+    photoView.classList.toggle('popup_opened');
     photoViewImage.src = cardImage.src;
     photoViewCaption.textContent = cardImage.alt;
   })
@@ -157,5 +157,5 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 
 // Кнопка закрыть изображение
 closePhotoViewBtn.addEventListener('click', function () {
-    photoView.classList.toggle('photo-view_opened');
+    photoView.classList.toggle('popup_opened');
   })
