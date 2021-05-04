@@ -47,10 +47,11 @@ function createCard(name, link) {
   const delBtn = card.querySelector('.photo-grid__del-btn');
   const cardImage = card.querySelector('.photo-grid__image');
 
-  cardTitle.textContent, cardImage.alt = name;
+  cardTitle.textContent = name;
   cardLink.src = link;
-
+  cardImage.alt = name;
   // Лайк 
+
   likeBtn.addEventListener('click', likePost);
 
   // Удаление карточки
@@ -75,7 +76,8 @@ function delCard(evt) {
 function viewPhoto(cardImageSrc, cardImageAlt) {
   openCloseTurn(photoView);
   photoViewImage.src = cardImageSrc;
-  photoViewCaption.textContent, photoViewImage.alt = cardImageAlt;
+  photoViewCaption.textContent = cardImageAlt;
+  photoViewImage.alt = cardImageAlt;
 }
 
 
