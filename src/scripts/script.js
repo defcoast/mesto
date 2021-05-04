@@ -32,15 +32,17 @@ const photoViewCaption = photoView.querySelector('.photo-view__caption');
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
 
+// Подключение к темплейту карточки
+const photoGridTemplate = document.querySelector('#photo-grid-template').content;
+
 
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
 
 function createCard(name, link) {
-  const photoGridTemplate = document.querySelector('#photo-grid-template').content;
   const card = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
-  let cardTitle = card.querySelector('.photo-grid__title');
-  let cardLink = card.querySelector('.photo-grid__image');
+  const cardTitle = card.querySelector('.photo-grid__title');
+  const cardLink = card.querySelector('.photo-grid__image');
   const likeBtn = card.querySelector('.photo-grid__like-btn');
   const delBtn = card.querySelector('.photo-grid__del-btn');
   const cardImage = card.querySelector('.photo-grid__image');
