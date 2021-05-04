@@ -47,28 +47,35 @@ function createCard(name, link) {
   const delBtn = card.querySelector('.photo-grid__del-btn');
   const cardImage = card.querySelector('.photo-grid__image');
 
-  cardTitle.textContent = name;
+  cardTitle.textContent, cardImage.alt = name;
   cardLink.src = link;
-  cardImage.alt = cardTitle.textContent;
 
-//  like
-  likeBtn.addEventListener('click', function (evt) {
-    evt.target.classList.toggle('like-btn_active');
-  });
+  // Лайк 
+  likeBtn.addEventListener('click', likePost);
 
-  //delete
-  delBtn.addEventListener('click', function (evt) {
-    evt.target.closest('.photo-grid__element').remove();
-  })
+  // Удаление карточки
+  delBtn.addEventListener('click', delCard)
 
-  //open photo
-  cardImage.addEventListener('click', function (evt) {
-    photoView.classList.toggle('popup_opened');
-    photoViewImage.src = cardImage.src;
-    photoViewCaption.textContent = cardImage.alt;
+  // Просмотр фото
+  cardImage.addEventListener('click', function () {
+    viewPhoto(cardImage.src, cardImage.alt);
   })
 
   return card;
+}
+
+function likePost(evt) {
+ evt.target.classList.toggle('like-btn_active');
+}
+
+function delCard(evt) {
+  evt.target.closest('.photo-grid__element').remove();
+}
+
+function viewPhoto(cardImageSrc, cardImageAlt) {
+  openCloseTurn(photoView);
+  photoViewImage.src = cardImageSrc;
+  photoViewCaption.textContent, photoViewImage.alt = cardImageAlt;
 }
 
 
@@ -126,8 +133,7 @@ pushStartingCards();
 // Кнопка Добавить карточку
 addBtn.addEventListener('click', function () {
   openCloseTurn(createPlaceMenu);
-  createMenuNameInput.value = ''
-  createMenuLinkInput.value = ''
+  createForm.reset();
 
 });
 
