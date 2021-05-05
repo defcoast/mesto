@@ -104,7 +104,7 @@ function openCloseTurn(popupName) {
 function createCardHandler(evt) {
   evt.preventDefault();
 
-  createPlaceMenu.classList.toggle('popup_opened');
+  openCloseTurn(createPlaceMenu);
 
   photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
@@ -165,5 +165,5 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 
 // Кнопка закрыть изображение
 closePhotoViewBtn.addEventListener('click', function () {
-    photoView.classList.toggle('popup_opened');
+  openCloseTurn(photoView);
   })
