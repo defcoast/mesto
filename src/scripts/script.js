@@ -1,6 +1,9 @@
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
 
+// Подключение к оверлэю
+const overlay = Array.from(document.querySelectorAll('.popup'));
+
 // Подключение к блоку PROFILE
 const profile = document.querySelector('.profile');
 const addBtn = profile.querySelector('.profile__add-btn');
@@ -122,6 +125,24 @@ function editProfileHandler(evt) {
   profileUserBio.textContent = editProfileUserBioInput.value;
 }
 
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    editProfileMenu.classList.remove('popup_opened');
+    createPlaceMenu.classList.remove('popup_opened');
+    photoView.classList.remove('popup_opened');
+  }
+}
+
+function closeByOverlay() {
+  overlay.forEach((overlayElement) => {
+    overlayElement.addEventListener('mouseup', (evt) => {
+    evt.target.classList.remove('popup_opened');
+
+    })
+  })
+}
+
+
 
 
 // ВЫЗОВ ФУНКЦИЙ
@@ -129,6 +150,7 @@ function editProfileHandler(evt) {
 
 createCard();
 pushStartingCards();
+closeByOverlay();
 
 
 
@@ -170,3 +192,6 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 closePhotoViewBtn.addEventListener('click', function () {
   openCloseTurn(photoView);
 });
+
+document.addEventListener('keydown', closeByEsc);
+
