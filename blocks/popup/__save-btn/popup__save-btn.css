@@ -1,7 +1,3 @@
-.popup__save-btn {
-  margin-top: 48px;
-}
-
 .popup__save-btn:disabled {
   background-color: #fff;
   color: #000;
