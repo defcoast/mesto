@@ -57,8 +57,12 @@
         Редактировать профиль
       </h2>
       <form action="#" name="userdata" class="popup__form">
-        <input type="text" name="username" class="popup__input" id="username" placeholder="Имя" required>
-        <input type="text" name="userbio" class="popup__input" id="userbio" placeholder="Профессия" required>
+        <input type="text" name="username" class="popup__input" id="username" placeholder="Имя" minlength="2"
+          maxlength="40" required>
+        <span class="popup__input-error" id="username-error"></span>
+        <input type="text" name="userbio" class="popup__input" id="userbio" placeholder="Профессия" minlength="2"
+          maxlength="2000" required>
+        <span class="popup__input-error" id="userbio-error"></span>
         <button type="submit" class="save-btn popup__save-btn">
           Сохранить
         </button>
@@ -73,9 +77,12 @@
       <h2 class="popup__title">
         Новое место
       </h2>
-      <form action="#" name="create-card" class="popup__form" id="new-place">
-        <input type="text" name="name" class="popup__input" id="name" placeholder="Название" required>
+      <form action="#" name="create-card" class="popup__form" id="new-place" novalidate>
+        <input type="text" name="name" class="popup__input" id="name" placeholder="Название" minlength="2"
+          maxlength="30" required>
+        <span class="popup__input-error" id="name-error"></span>
         <input type="url" name="link" class="popup__input" id="link" placeholder="Ссылка на картинку" required>
+        <span class="popup__input-error" id="link-error"></span>
         <button type="submit" class="save-btn popup__save-btn">
           Создать
         </button>
@@ -107,6 +114,7 @@
   </template>
 
   <script src="./src/scripts/initial-сards.js"></script>
+  <script src="./src/scripts/validate.js"></script>
   <script src="./src/scripts/script.js"></script>
 </body>
 

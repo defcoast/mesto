@@ -99,6 +99,9 @@ function openCloseTurn(popupName) {
 }
 
 
+
+
+
 // ФУНКЦИИ-ОБРАБОТЧИКИ СОБЫТИЙ
 
 function createCardHandler(evt) {
@@ -166,4 +169,4 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 // Кнопка закрыть изображение
 closePhotoViewBtn.addEventListener('click', function () {
   openCloseTurn(photoView);
-  })
+});
