@@ -77,7 +77,7 @@ function delCard(evt) {
 }
 
 function viewPhoto(cardImageSrc, cardImageAlt) {
-  openCloseTurn(photoView);
+  showPopup(photoView);
   photoViewImage.src = cardImageSrc;
   photoViewCaption.textContent = cardImageAlt;
   photoViewImage.alt = cardImageAlt;
@@ -97,20 +97,23 @@ function pushStartingCards() {
 }
 
 
-function openCloseTurn(popupName) {
-  popupName.classList.toggle('popup_opened');
+function showPopup(popup) {
+  popup.classList.add('popup_opened');
+  closeByOverlay(popup);
+  document.addEventListener('keydown', closeByEsc);
+
 }
 
+function hidePopup(popup) {
+  popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEsc);
+}
 
-
-
-
-// ФУНКЦИИ-ОБРАБОТЧИКИ СОБЫТИЙ
 
 function createCardHandler(evt) {
   evt.preventDefault();
 
-  openCloseTurn(createPlaceMenu);
+  hidePopup(createPlaceMenu);
 
   photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
@@ -119,7 +122,7 @@ function createCardHandler(evt) {
 function editProfileHandler(evt) {
   evt.preventDefault();
 
-  openCloseTurn(editProfileMenu);
+  hidePopup(editProfileMenu);
 
   profileUserName.textContent = editProfileUserNameInput.value;
   profileUserBio.textContent = editProfileUserBioInput.value;
@@ -127,9 +130,9 @@ function editProfileHandler(evt) {
 
 function closeByEsc(evt) {
   if (evt.key === 'Escape') {
-    editProfileMenu.classList.remove('popup_opened');
-    createPlaceMenu.classList.remove('popup_opened');
-    photoView.classList.remove('popup_opened');
+    hidePopup(editProfileMenu);
+    hidePopup(createPlaceMenu);
+    hidePopup(photoView);
   }
 }
 
@@ -159,14 +162,14 @@ closeByOverlay();
 
 // Кнопка Добавить карточку
 addBtn.addEventListener('click', function () {
-  openCloseTurn(createPlaceMenu);
+  showPopup(createPlaceMenu);
   createForm.reset();
 
 });
 
 // Кнопка закрыть меню добавления карточки
 closeCreateCardBtn.addEventListener('click', function () {
-  openCloseTurn(createPlaceMenu);
+  hidePopup(createPlaceMenu);
 });
 
 // Кнопка создать новую карточку
@@ -175,14 +178,14 @@ createForm.addEventListener('submit', createCardHandler);
 
 // Кнопка редактировать профиль
 editBtn.addEventListener('click', function () {
-  openCloseTurn(editProfileMenu);
+  showPopup(editProfileMenu);
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
 });
 
 // Кнопка закрыть меню редактирования профиля
 closeProfileMenuBtn.addEventListener('click', function () {
-  openCloseTurn(editProfileMenu);
+  hidePopup(editProfileMenu);
 });
 
 // Кнопка сохранить изменения в профиле
@@ -190,8 +193,8 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 
 // Кнопка закрыть изображение
 closePhotoViewBtn.addEventListener('click', function () {
-  openCloseTurn(photoView);
+  hidePopup(photoView);
 });
 
-document.addEventListener('keydown', closeByEsc);
+// document.addEventListener('keydown', closeByEsc);
 
