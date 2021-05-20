@@ -16,8 +16,8 @@ const editProfileMenu = document.querySelector('#edit-popup');
 const closeProfileMenuBtn = editProfileMenu.querySelector('.popup__close-btn');
 const editProfileForm = editProfileMenu.querySelector('.popup__form');
 const editProfileUserNameInput = editProfileForm.querySelector('#username');
-const editProfileUserBioInput = editProfileForm.querySelector('#userbio');
-
+const editProfileUserBioInput = editProfileForm.querySelector('#userbio'); 
+const editProfileSaveBtn = editProfileMenu.querySelector('.popup__save-btn');
 // Подключение к меню создания новой карточки
 const createPlaceMenu = document.querySelector('#add-popup');
 const createForm = createPlaceMenu.querySelector('.popup__form')
@@ -180,6 +180,7 @@ editBtn.addEventListener('click', function () {
   showPopup(editProfileMenu);
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
+  editProfileSaveBtn.disabled = false;
   hideInputError(editProfileForm, editProfileUserNameInput, config);
   hideInputError(editProfileForm, editProfileUserBioInput, config);
 });
@@ -197,5 +198,4 @@ closePhotoViewBtn.addEventListener('click', function () {
   hidePopup(photoView);
 });
 
-// document.addEventListener('keydown', closeByEsc);
 
