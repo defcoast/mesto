@@ -99,7 +99,6 @@ function pushStartingCards() {
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
-  closeByOverlay(popup);
   document.addEventListener('keydown', closeByEsc);
 
 }
@@ -114,7 +113,7 @@ function createCardHandler(evt) {
   evt.preventDefault();
 
   hidePopup(createPlaceMenu);
-
+  checkButtonState(createCardBtn, )
   photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
 }
@@ -129,18 +128,16 @@ function editProfileHandler(evt) {
 }
 
 function closeByEsc(evt) {
+  const openedPopup = document.querySelector('.popup_opened');  
   if (evt.key === 'Escape') {
-    hidePopup(editProfileMenu);
-    hidePopup(createPlaceMenu);
-    hidePopup(photoView);
+    hidePopup(openedPopup);
   }
 }
 
 function closeByOverlay() {
   overlay.forEach((overlayElement) => {
-    overlayElement.addEventListener('mouseup', (evt) => {
-    evt.target.classList.remove('popup_opened');
-
+    overlayElement.addEventListener('mousedown', (evt) => {
+      hidePopup(evt.target); 
     })
   })
 }
@@ -164,7 +161,10 @@ closeByOverlay();
 addBtn.addEventListener('click', function () {
   showPopup(createPlaceMenu);
   createForm.reset();
-
+  createCardBtn.disabled = true;
+  hideInputError(createForm, createMenuNameInput, config);
+  hideInputError(createForm, createMenuLinkInput, config);
+    
 });
 
 // Кнопка закрыть меню добавления карточки
@@ -181,6 +181,8 @@ editBtn.addEventListener('click', function () {
   showPopup(editProfileMenu);
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
+  hideInputError(editProfileForm, editProfileUserNameInput, config);
+  hideInputError(editProfileForm, editProfileUserBioInput, config);
 });
 
 // Кнопка закрыть меню редактирования профиля

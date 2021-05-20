@@ -10,10 +10,9 @@ const showInputError = (form, input, config) => {
 
 
 const hideInputError = (form, input, config) => {
-  // Подключаем span для вывода ошибки
   const errorSpan = form.querySelector(`#${input.id}-error`);
 
-  errorSpan.textContent = input.validationMessage;
+  errorSpan.textContent = '';
 
   input.classList.remove(config.inputErrorClass);
   errorSpan.classList.remove(config.errorClass);
@@ -75,11 +74,12 @@ const enableValidation = (config) => {
   })
 }
 
-
-enableValidation({
+const config = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save-btn',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
-}); 
+}
+
+enableValidation(config); 
