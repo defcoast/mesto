@@ -113,7 +113,6 @@ function createCardHandler(evt) {
   evt.preventDefault();
 
   hidePopup(createPlaceMenu);
-  checkButtonState(createCardBtn, )
   photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
 }
