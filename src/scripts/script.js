@@ -16,11 +16,11 @@ const editProfileMenu = document.querySelector('#edit-popup');
 const closeProfileMenuBtn = editProfileMenu.querySelector('.popup__close-btn');
 const editProfileForm = editProfileMenu.querySelector('.popup__form');
 const editProfileUserNameInput = editProfileForm.querySelector('#username');
-const editProfileUserBioInput = editProfileForm.querySelector('#userbio'); 
+const editProfileUserBioInput = editProfileForm.querySelector('#userbio');
 const editProfileSaveBtn = editProfileMenu.querySelector('.popup__save-btn');
 // Подключение к меню создания новой карточки
 const createPlaceMenu = document.querySelector('#add-popup');
-const createForm = createPlaceMenu.querySelector('.popup__form')
+const createForm = createPlaceMenu.querySelector('.popup__form');
 const createCardBtn = createPlaceMenu.querySelector('.popup__save-btn');
 const closeCreateCardBtn = createPlaceMenu.querySelector('.popup__close-btn');
 const createMenuNameInput = createPlaceMenu.querySelector('#name');
@@ -35,41 +35,11 @@ const photoViewCaption = photoView.querySelector('.popup__caption');
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
 
-// Подключение к темплейту карточки
-const photoGridTemplate = document.querySelector('#photo-grid-template').content;
-
-
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
 
-function createCard(name, link) {
-  const card = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
-  const cardTitle = card.querySelector('.photo-grid__title');
-  const cardLink = card.querySelector('.photo-grid__image');
-  const likeBtn = card.querySelector('.photo-grid__like-btn');
-  const delBtn = card.querySelector('.photo-grid__del-btn');
-  const cardImage = card.querySelector('.photo-grid__image');
-
-  cardTitle.textContent = name;
-  cardLink.src = link;
-  cardImage.alt = name;
-  // Лайк 
-
-  likeBtn.addEventListener('click', likePost);
-
-  // Удаление карточки
-  delBtn.addEventListener('click', delCard)
-
-  // Просмотр фото
-  cardImage.addEventListener('click', function () {
-    viewPhoto(cardImage.src, cardImage.alt);
-  })
-
-  return card;
-}
-
 function likePost(evt) {
- evt.target.classList.toggle('like-btn_active');
+  evt.target.classList.toggle('like-btn_active');
 }
 
 function delCard(evt) {
@@ -83,24 +53,21 @@ function viewPhoto(cardImageSrc, cardImageAlt) {
   photoViewImage.alt = cardImageAlt;
 }
 
-
 function pushStartingCards() {
   const startingCards = [];
 
-    initialCards.forEach(function (item) {
-      startingCards.push(createCard(item.name, item.link));
-    });
-    
-    startingCards.forEach(function (item) {
-       photoGridList.append(item)
-    })
-}
+  initialCards.forEach(function (item) {
+    startingCards.push(createCard(item.name, item.link));
+  });
 
+  startingCards.forEach(function (item) {
+    photoGridList.append(item);
+  });
+}
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeByEsc);
-
 }
 
 function hidePopup(popup) {
@@ -108,13 +75,17 @@ function hidePopup(popup) {
   document.removeEventListener('keydown', closeByEsc);
 }
 
-
 function createCardHandler(evt) {
   evt.preventDefault();
 
   hidePopup(createPlaceMenu);
-  photoGridList.prepend(createCard(createMenuNameInput.value, createMenuLinkInput.value));
 
+  const card = new Card(
+    { name: createMenuNameInput.value, link: createMenuLinkInput.value },
+    '#photo-grid-template'
+  );
+  const cardElement = card.generateCard();
+  photoGridList.prepend(cardElement);
 }
 
 function editProfileHandler(evt) {
@@ -127,7 +98,7 @@ function editProfileHandler(evt) {
 }
 
 function closeByEsc(evt) {
-  const openedPopup = document.querySelector('.popup_opened');  
+  const openedPopup = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
     hidePopup(openedPopup);
   }
@@ -136,22 +107,17 @@ function closeByEsc(evt) {
 function closeByOverlay() {
   overlay.forEach((overlayElement) => {
     overlayElement.addEventListener('mousedown', (evt) => {
-      hidePopup(evt.target); 
-    })
-  })
+      hidePopup(evt.target);
+    });
+  });
 }
-
-
-
 
 // ВЫЗОВ ФУНКЦИЙ
 // ---------------------------------------------------------------------
 
-createCard();
-pushStartingCards();
+// createCard();
+// pushStartingCards();
 closeByOverlay();
-
-
 
 //ОБЪЯВЛЕНИЕ СЛУШАТЕЛЕЙ
 // ---------------------------------------------------------------------
@@ -163,7 +129,6 @@ addBtn.addEventListener('click', function () {
   createCardBtn.disabled = true;
   hideInputError(createForm, createMenuNameInput, config);
   hideInputError(createForm, createMenuLinkInput, config);
-    
 });
 
 // Кнопка закрыть меню добавления карточки
@@ -173,7 +138,6 @@ closeCreateCardBtn.addEventListener('click', function () {
 
 // Кнопка создать новую карточку
 createForm.addEventListener('submit', createCardHandler);
-
 
 // Кнопка редактировать профиль
 editBtn.addEventListener('click', function () {
@@ -198,4 +162,55 @@ closePhotoViewBtn.addEventListener('click', function () {
   hidePopup(photoView);
 });
 
+class Card {
+  _text;
+  _image;
 
+  constructor(data, cardTemplate) {
+    this._name = data.name;
+    this._link = data.link;
+    this._cardTemplate = cardTemplate;
+  }
+
+  _getTemplate() {
+    const card = document
+      .querySelector(this._cardTemplate)
+      .content.querySelector('.photo-grid__element')
+      .cloneNode(true);
+
+    return card;
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+
+    const cardTitle = this._element.querySelector('.photo-grid__title');
+    const cardImage = this._element.querySelector('.photo-grid__image');
+
+    cardTitle.textContent = this._name;
+    cardImage.src = this._link;
+    cardImage.alt = this._name;
+
+    this._setEventListener();
+
+    return this._element;
+  }
+
+  _setEventListener() {
+    const likeBtn = this._element.querySelector('.photo-grid__like-btn');
+    const delBtn = this._element.querySelector('.photo-grid__del-btn');
+    const cardImage = this._element.querySelector('.photo-grid__image');
+
+    likeBtn.addEventListener('click', likePost);
+    delBtn.addEventListener('click', delCard);
+    cardImage.addEventListener('click', () => {
+      viewPhoto(this._link, this._name);
+    });
+  }
+}
+
+initialCards.forEach((item) => {
+  const card = new Card(item, '#photo-grid-template');
+  const cardElement = card.generateCard();
+  photoGridList.append(cardElement);
+});
