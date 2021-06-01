@@ -1,4 +1,4 @@
-import { likePost, delCard } from './index.js';
+import { likePost, delCard, viewPhoto } from './index.js';
 
 export default class Card {
   _text;

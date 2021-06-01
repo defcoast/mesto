@@ -20,15 +20,15 @@ export default class FormValidator {
     });
 
     // Подкключаем все инпуты в форме и конпку
-    const inputList = Array.from(
+    this._inputList = Array.from(
       this._form.querySelectorAll(this._inputSelector)
     );
-    const button = this._form.querySelector(this._submitButtonSelector);
+    this._button = this._form.querySelector(this._submitButtonSelector);
 
-    inputList.forEach((input) => {
+    this._inputList.forEach((input) => {
       input.addEventListener('input', () => {
         this._checkValidation(input);
-        this._checkButtonState(button, inputList);
+        this._checkButtonState();
       });
     });
   }
@@ -41,11 +41,11 @@ export default class FormValidator {
     }
   }
 
-  _checkButtonState(button, inputList) {
-    if (hazInvalidInput(inputList)) {
-      button.disabled = true;
+  _checkButtonState() {
+    if (hazInvalidInput(this._inputList)) {
+      this._button.disabled = true;
     } else {
-      button.disabled = false;
+      this._button.disabled = false;
     }
   }
 }

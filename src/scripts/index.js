@@ -1,7 +1,14 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
-export { likePost, delCard, showInputError, hideInputError, hazInvalidInput };
+export {
+  likePost,
+  delCard,
+  showInputError,
+  hideInputError,
+  hazInvalidInput,
+  viewPhoto,
+};
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
 
@@ -83,18 +90,6 @@ function viewPhoto(cardImageSrc, cardImageAlt) {
   photoViewImage.src = cardImageSrc;
   photoViewCaption.textContent = cardImageAlt;
   photoViewImage.alt = cardImageAlt;
-}
-
-function pushStartingCards() {
-  const startingCards = [];
-
-  initialCards.forEach(function (item) {
-    startingCards.push(createCard(item.name, item.link));
-  });
-
-  startingCards.forEach(function (item) {
-    photoGridList.append(item);
-  });
 }
 
 function showPopup(popup) {
