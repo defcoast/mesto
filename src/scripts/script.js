@@ -127,8 +127,8 @@ addBtn.addEventListener('click', function () {
   showPopup(createPlaceMenu);
   createForm.reset();
   createCardBtn.disabled = true;
-  hideInputError(createForm, createMenuNameInput, config);
-  hideInputError(createForm, createMenuLinkInput, config);
+  hideInputError(createForm, createMenuNameInput);
+  hideInputError(createForm, createMenuLinkInput);
 });
 
 // Кнопка закрыть меню добавления карточки
@@ -145,8 +145,8 @@ editBtn.addEventListener('click', function () {
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
   editProfileSaveBtn.disabled = false;
-  hideInputError(editProfileForm, editProfileUserNameInput, config);
-  hideInputError(editProfileForm, editProfileUserBioInput, config);
+  hideInputError(editProfileForm, editProfileUserNameInput);
+  hideInputError(editProfileForm, editProfileUserBioInput);
 });
 
 // Кнопка закрыть меню редактирования профиля
