@@ -1,3 +1,7 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+export { likePost, delCard, showInputError, hideInputError, hazInvalidInput };
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
 
@@ -34,6 +38,34 @@ const photoViewCaption = photoView.querySelector('.popup__caption');
 
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
+
+//Массив со стартовыми фотографиями
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
+  },
+];
 
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
@@ -162,55 +194,53 @@ closePhotoViewBtn.addEventListener('click', function () {
   hidePopup(photoView);
 });
 
-class Card {
-  _text;
-  _image;
-
-  constructor(data, cardTemplate) {
-    this._name = data.name;
-    this._link = data.link;
-    this._cardTemplate = cardTemplate;
-  }
-
-  _getTemplate() {
-    const card = document
-      .querySelector(this._cardTemplate)
-      .content.querySelector('.photo-grid__element')
-      .cloneNode(true);
-
-    return card;
-  }
-
-  generateCard() {
-    this._element = this._getTemplate();
-
-    const cardTitle = this._element.querySelector('.photo-grid__title');
-    const cardImage = this._element.querySelector('.photo-grid__image');
-
-    cardTitle.textContent = this._name;
-    cardImage.src = this._link;
-    cardImage.alt = this._name;
-
-    this._setEventListener();
-
-    return this._element;
-  }
-
-  _setEventListener() {
-    const likeBtn = this._element.querySelector('.photo-grid__like-btn');
-    const delBtn = this._element.querySelector('.photo-grid__del-btn');
-    const cardImage = this._element.querySelector('.photo-grid__image');
-
-    likeBtn.addEventListener('click', likePost);
-    delBtn.addEventListener('click', delCard);
-    cardImage.addEventListener('click', () => {
-      viewPhoto(this._link, this._name);
-    });
-  }
-}
-
 initialCards.forEach((item) => {
   const card = new Card(item, '#photo-grid-template');
   const cardElement = card.generateCard();
   photoGridList.append(cardElement);
 });
+
+const showInputError = (form, input) => {
+  // Подключаем span для вывода ошибки
+  const errorSpan = form.querySelector(`#${input.id}-error`);
+
+  errorSpan.textContent = input.validationMessage;
+
+  input.classList.add(config.inputErrorClass);
+  errorSpan.classList.add(config.errorClass);
+};
+
+const hideInputError = (form, input) => {
+  const errorSpan = form.querySelector(`#${input.id}-error`);
+
+  errorSpan.textContent = '';
+
+  input.classList.remove(config.inputErrorClass);
+  errorSpan.classList.remove(config.errorClass);
+};
+
+const hazInvalidInput = (inputList) => {
+  return inputList.some((input) => !input.validity.valid);
+};
+
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-btn',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+};
+
+function startValidation() {
+  const editProfileMenu = document.querySelector('#edit-popup');
+  const editProfileForm = editProfileMenu.querySelector('.popup__form');
+  const editForm = new FormValidator(config, editProfileForm);
+  editForm.enableValidation();
+
+  const createPlaceMenu = document.querySelector('#add-popup');
+  const createForm = createPlaceMenu.querySelector('.popup__form');
+  const createFormEl = new FormValidator(config, createForm);
+  createFormEl.enableValidation();
+}
+
+startValidation();
