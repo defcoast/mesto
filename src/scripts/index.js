@@ -1,7 +1,9 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import { initialCards } from './initial-сards.js';
 
-export { showPopup, showInputError, hideInputError, hazInvalidInput };
+export { showPopup };
+
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
 
@@ -39,51 +41,17 @@ const closePhotoViewBtn = photoView.querySelector('.popup__close-btn');
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
 
-//Массив со стартовыми фотографиями
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-  },
-];
+// Конфигурация для валидатора
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-btn',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+};
 
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
-
-// function likePost(evt) {
-//   evt.target.classList.toggle('like-btn_active');
-// }
-
-// function delCard(evt) {
-//   evt.target.closest('.photo-grid__element').remove();
-// }
-
-// function viewPhoto(cardImageSrc, cardImageAlt) {
-//   showPopup(photoView);
-//   photoViewImage.src = cardImageSrc;
-//   photoViewCaption.textContent = cardImageAlt;
-//   photoViewImage.alt = cardImageAlt;
-// }
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
@@ -93,28 +61,6 @@ function showPopup(popup) {
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeByEsc);
-}
-
-function createCardHandler(evt) {
-  evt.preventDefault();
-
-  hidePopup(createPlaceMenu);
-
-  const card = new Card(
-    { name: createMenuNameInput.value, link: createMenuLinkInput.value },
-    '#photo-grid-template'
-  );
-  const cardElement = card.generateCard();
-  photoGridList.prepend(cardElement);
-}
-
-function editProfileHandler(evt) {
-  evt.preventDefault();
-
-  hidePopup(editProfileMenu);
-
-  profileUserName.textContent = editProfileUserNameInput.value;
-  profileUserBio.textContent = editProfileUserBioInput.value;
 }
 
 function closeByEsc(evt) {
@@ -135,9 +81,42 @@ function closeByOverlay() {
 // ВЫЗОВ ФУНКЦИЙ
 // ---------------------------------------------------------------------
 
-// createCard();
-// pushStartingCards();
+initialCards.forEach((item) => {
+  photoGridList.append(renderCard(item, '#photo-grid-template'));
+});
+
+function renderCard(item, cardTemplateSelector) {
+  const card = new Card(item, cardTemplateSelector);
+  const cardElement = card.generateCard();
+  return cardElement;
+}
+
 closeByOverlay();
+
+// ОБРАБОТЧИКИ СОБЫТИЙ
+// ---------------------------------------------------------------------
+
+function createCardHandler(evt) {
+  evt.preventDefault();
+
+  hidePopup(createPlaceMenu);
+
+  photoGridList.prepend(
+    renderCard(
+      { name: createMenuNameInput.value, link: createMenuLinkInput.value },
+      '#photo-grid-template'
+    )
+  );
+}
+
+function editProfileHandler(evt) {
+  evt.preventDefault();
+
+  hidePopup(editProfileMenu);
+
+  profileUserName.textContent = editProfileUserNameInput.value;
+  profileUserBio.textContent = editProfileUserBioInput.value;
+}
 
 //ОБЪЯВЛЕНИЕ СЛУШАТЕЛЕЙ
 // ---------------------------------------------------------------------
@@ -146,9 +125,12 @@ closeByOverlay();
 addBtn.addEventListener('click', function () {
   showPopup(createPlaceMenu);
   createForm.reset();
-  createCardBtn.disabled = true;
-  hideInputError(createForm, createMenuNameInput);
-  hideInputError(createForm, createMenuLinkInput);
+  // createCardBtn.disabled = true;
+  const createFormEl = new FormValidator(config, createForm);
+  createFormEl.enableValidation();
+  createFormEl.hideInputError(createMenuNameInput);
+  createFormEl.hideInputError(createMenuLinkInput);
+  createFormEl.checkButtonState();
 });
 
 // Кнопка закрыть меню добавления карточки
@@ -164,9 +146,11 @@ editBtn.addEventListener('click', function () {
   showPopup(editProfileMenu);
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
-  editProfileSaveBtn.disabled = false;
-  hideInputError(editProfileForm, editProfileUserNameInput);
-  hideInputError(editProfileForm, editProfileUserBioInput);
+  const editFormEl = new FormValidator(config, editProfileForm);
+  editFormEl.enableValidation();
+  editFormEl.hideInputError(editProfileUserNameInput);
+  editFormEl.hideInputError(editProfileUserBioInput);
+  editFormEl.checkButtonState();
 });
 
 // Кнопка закрыть меню редактирования профиля
@@ -181,54 +165,3 @@ editProfileForm.addEventListener('submit', editProfileHandler);
 closePhotoViewBtn.addEventListener('click', function () {
   hidePopup(photoView);
 });
-
-initialCards.forEach((item) => {
-  const card = new Card(item, '#photo-grid-template');
-  const cardElement = card.generateCard();
-  photoGridList.append(cardElement);
-});
-
-const showInputError = (form, input) => {
-  // Подключаем span для вывода ошибки
-  const errorSpan = form.querySelector(`#${input.id}-error`);
-
-  errorSpan.textContent = input.validationMessage;
-
-  input.classList.add(config.inputErrorClass);
-  errorSpan.classList.add(config.errorClass);
-};
-
-const hideInputError = (form, input) => {
-  const errorSpan = form.querySelector(`#${input.id}-error`);
-
-  errorSpan.textContent = '';
-
-  input.classList.remove(config.inputErrorClass);
-  errorSpan.classList.remove(config.errorClass);
-};
-
-const hazInvalidInput = (inputList) => {
-  return inputList.some((input) => !input.validity.valid);
-};
-
-const config = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-btn',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active',
-};
-
-function startValidation() {
-  const editProfileMenu = document.querySelector('#edit-popup');
-  const editProfileForm = editProfileMenu.querySelector('.popup__form');
-  const editForm = new FormValidator(config, editProfileForm);
-  editForm.enableValidation();
-
-  const createPlaceMenu = document.querySelector('#add-popup');
-  const createForm = createPlaceMenu.querySelector('.popup__form');
-  const createFormEl = new FormValidator(config, createForm);
-  createFormEl.enableValidation();
-}
-
-startValidation();

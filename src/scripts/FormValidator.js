@@ -1,5 +1,3 @@
-import { showInputError, hideInputError, hazInvalidInput } from './index.js';
-
 export default class FormValidator {
   constructor(config, form) {
     this._formSelector = config.formSelector;
@@ -8,18 +6,23 @@ export default class FormValidator {
     this._inputErrorClass = config.inputErrorClass;
     this._errorClass = config.errorClass;
     this._form = form;
+
+    // Подкключаем все инпуты в форме и конпку
+    this._inputList = Array.from(
+      this._form.querySelectorAll(this._inputSelector)
+    );
+    this._button = this._form.querySelector(this._submitButtonSelector);
   }
 
   enableValidation() {
-    this._setEventListener();
+    this._setEventListeners();
   }
 
-  _setEventListener() {
+  _setEventListeners() {
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
 
-    // Подкключаем все инпуты в форме и конпку
     this._inputList = Array.from(
       this._form.querySelectorAll(this._inputSelector)
     );
@@ -28,24 +31,47 @@ export default class FormValidator {
     this._inputList.forEach((input) => {
       input.addEventListener('input', () => {
         this._checkValidation(input);
-        this._checkButtonState();
+        this.checkButtonState();
       });
     });
   }
 
   _checkValidation(input) {
     if (!input.validity.valid) {
-      showInputError(this._form, input);
+      this._showInputError(input);
     } else {
-      hideInputError(this._form, input);
+      this.hideInputError(input);
     }
   }
 
-  _checkButtonState() {
-    if (hazInvalidInput(this._inputList)) {
+  checkButtonState() {
+    if (this._hasInvalidInput()) {
       this._button.disabled = true;
     } else {
       this._button.disabled = false;
     }
+  }
+
+  _hasInvalidInput() {
+    return this._inputList.some((input) => !input.validity.valid);
+  }
+
+  _showInputError(input) {
+    // Подключаем span для вывода ошибки
+    const errorSpan = this._form.querySelector(`#${input.id}-error`);
+
+    errorSpan.textContent = input.validationMessage;
+
+    input.classList.add(this._inputErrorClass);
+    errorSpan.classList.add(this._errorClass);
+  }
+
+  hideInputError(input) {
+    const errorSpan = this._form.querySelector(`#${input.id}-error`);
+
+    errorSpan.textContent = '';
+
+    input.classList.remove(this._inputErrorClass);
+    errorSpan.classList.remove(this._errorClass);
   }
 }
