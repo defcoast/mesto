@@ -1,14 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
-export {
-  likePost,
-  delCard,
-  showInputError,
-  hideInputError,
-  hazInvalidInput,
-  viewPhoto,
-};
+export { showPopup, showInputError, hideInputError, hazInvalidInput };
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
 
@@ -39,9 +32,9 @@ const createMenuLinkInput = createPlaceMenu.querySelector('#link');
 
 // Подключение к меню просмотра фото
 const photoView = document.querySelector('#view-popup');
-const photoViewImage = photoView.querySelector('.popup__image');
+// const photoViewImage = photoView.querySelector('.popup__image');
 const closePhotoViewBtn = photoView.querySelector('.popup__close-btn');
-const photoViewCaption = photoView.querySelector('.popup__caption');
+// const photoViewCaption = photoView.querySelector('.popup__caption');
 
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
@@ -77,20 +70,20 @@ const initialCards = [
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
 
-function likePost(evt) {
-  evt.target.classList.toggle('like-btn_active');
-}
+// function likePost(evt) {
+//   evt.target.classList.toggle('like-btn_active');
+// }
 
-function delCard(evt) {
-  evt.target.closest('.photo-grid__element').remove();
-}
+// function delCard(evt) {
+//   evt.target.closest('.photo-grid__element').remove();
+// }
 
-function viewPhoto(cardImageSrc, cardImageAlt) {
-  showPopup(photoView);
-  photoViewImage.src = cardImageSrc;
-  photoViewCaption.textContent = cardImageAlt;
-  photoViewImage.alt = cardImageAlt;
-}
+// function viewPhoto(cardImageSrc, cardImageAlt) {
+//   showPopup(photoView);
+//   photoViewImage.src = cardImageSrc;
+//   photoViewCaption.textContent = cardImageAlt;
+//   photoViewImage.alt = cardImageAlt;
+// }
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
