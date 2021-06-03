@@ -4,12 +4,12 @@ export default class Card {
   constructor(data, cardTemplateSelector) {
     this._name = data.name;
     this._link = data.link;
-    this._cardTemplate = cardTemplateSelector;
+    this._cardTemplateSelector = cardTemplateSelector;
   }
 
   _getTemplate() {
     const card = document
-      .querySelector(this._cardTemplate)
+      .querySelector(this._cardTemplateSelector)
       .content.querySelector('.photo-grid__element')
       .cloneNode(true);
 
@@ -41,11 +41,11 @@ export default class Card {
     });
 
     delBtn.addEventListener('click', () => {
-      this._handleDeleteClick(delBtn);
+      this._handleDeleteClick();
     });
 
     cardImage.addEventListener('click', () => {
-      this._handleViewPhoto(this._link, this._name);
+      this._handleViewPhoto();
     });
   }
 
@@ -53,8 +53,9 @@ export default class Card {
     likeButton.classList.toggle('like-btn_active');
   }
 
-  _handleDeleteClick(deleteButton) {
-    deleteButton.closest('.photo-grid__element').remove();
+  _handleDeleteClick() {
+    this._element.remove();
+    this._element = null;
   }
 
   _handleViewPhoto() {
