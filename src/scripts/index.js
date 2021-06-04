@@ -90,7 +90,9 @@ initialCards.forEach((item) => {
 });
 
 const createFormEl = new FormValidator(config, createForm);
+createFormEl.enableValidation();
 const editFormEl = new FormValidator(config, editProfileForm);
+editFormEl.enableValidation();
 
 closeByOverlay();
 
@@ -126,7 +128,6 @@ function editProfileHandler(evt) {
 addBtn.addEventListener('click', function () {
   showPopup(createPlaceMenu);
   createForm.reset();
-  createFormEl.enableValidation();
   createFormEl.checkButtonState();
   createFormEl.clearInputsErrors();
 });
@@ -144,7 +145,6 @@ editBtn.addEventListener('click', function () {
   showPopup(editProfileMenu);
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
-  editFormEl.enableValidation();
   editFormEl.checkButtonState();
   editFormEl.clearInputsErrors();
 });
