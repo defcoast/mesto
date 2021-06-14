@@ -1,10 +1,11 @@
 import { showPopup } from './index.js';
 
 export default class Card {
-  constructor(data, cardTemplateSelector) {
+  constructor(data, cardTemplateSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
     this._cardTemplateSelector = cardTemplateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -63,7 +64,7 @@ export default class Card {
     const photoViewImage = photoView.querySelector('.popup__image');
     const photoViewCaption = photoView.querySelector('.popup__caption');
 
-    showPopup(photoView);
+    this._handleCardClick();
     photoViewImage.src = this._link;
     photoViewCaption.textContent = this._name;
     photoViewImage.alt = this._name;

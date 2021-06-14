@@ -3,6 +3,7 @@ import FormValidator from './FormValidator.js';
 import { initialCards } from './initial-сards.js';
 import { Section } from './Section.js';
 import { Popup } from './Popup.js';
+import { PopupWithImage } from './PopupWithImage.js';
 
 export { showPopup };
 
@@ -41,8 +42,6 @@ const closePhotoViewBtn = photoView.querySelector('.popup__close-btn');
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
 
-// const cardTemplateSelector = document.querySelector('#photo-grid-template');
-
 // Конфигурация для валидатора
 const config = {
   formSelector: '.popup__form',
@@ -59,7 +58,9 @@ const cardSection = new Section(
   {
     items: initialCards,
     renderer: (item, cardTemplateSelector) => {
-      const card = new Card(item, '#photo-grid-template');
+      const card = new Card(item, '#photo-grid-template', () => {
+        imagePopup.open();
+      });
       const cardElement = card.generateCard();
       return cardElement;
     },
@@ -70,8 +71,8 @@ const cardSection = new Section(
 const addCardPopup = new Popup('#add-popup');
 addCardPopup.setEventListeners();
 
-const editProfilePopup = new Popup('#edit-popup');
-editProfilePopup.setEventListeners();
+const imagePopup = new PopupWithImage('#view-popup');
+imagePopup.setEventListeners();
 
 function showPopup(popup) {
   // popup.classList.add('popup_opened');
@@ -83,13 +84,6 @@ function hidePopup(popup) {
   // document.removeEventListener('keydown', closeByEsc);
 }
 
-// function closeByEsc(evt) {
-//   const openedPopup = document.querySelector('.popup_opened');
-//   if (evt.key === 'Escape') {
-//     hidePopup(openedPopup);
-//   }
-// }
-
 function closeByOverlay() {
   overlays.forEach((overlayElement) => {
     overlayElement.addEventListener('mousedown', (evt) => {
@@ -97,12 +91,6 @@ function closeByOverlay() {
     });
   });
 }
-
-// function renderCard(item, cardTemplateSelector) {
-//   const card = new Card(item, cardTemplateSelector);
-//   const cardElement = card.generateCard();
-//   return cardElement;
-// }
 
 // ВЫЗОВ ФУНКЦИЙ
 // ---------------------------------------------------------------------
@@ -119,12 +107,14 @@ closeByOverlay();
 
 function createCardHandler(evt) {
   evt.preventDefault();
-  // hidePopup(createPlaceMenu);
   addCardPopup.close();
 
   const card = new Card(
     { name: createMenuNameInput.value, link: createMenuLinkInput.value },
-    '#photo-grid-template'
+    '#photo-grid-template',
+    () => {
+      imagePopup.open();
+    }
   );
 
   cardSection.addItem(card.generateCard());
@@ -133,7 +123,6 @@ function createCardHandler(evt) {
 function editProfileHandler(evt) {
   evt.preventDefault();
 
-  // hidePopup(editProfileMenu);
   editProfilePopup.close();
 
   profileUserName.textContent = editProfileUserNameInput.value;
@@ -145,18 +134,11 @@ function editProfileHandler(evt) {
 
 // Кнопка Добавить карточку
 addBtn.addEventListener('click', function () {
-  // showPopup(createPlaceMenu);
   addCardPopup.open();
   createForm.reset();
   createFormEl.checkButtonState();
   createFormEl.clearInputsErrors();
 });
-
-// Кнопка закрыть меню добавления карточки
-// closeCreateCardBtn.addEventListener('click', function () {
-//   // hidePopup(createPlaceMenu);
-//   addCardPopup.close();
-// });
 
 // Кнопка создать новую карточку
 createForm.addEventListener('submit', createCardHandler);
