@@ -67,22 +67,28 @@ const cardSection = new Section(
   '.photo-grid__elements'
 );
 
+const addCardPopup = new Popup('#add-popup');
+addCardPopup.setEventListeners();
+
+const editProfilePopup = new Popup('#edit-popup');
+editProfilePopup.setEventListeners();
+
 function showPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEsc);
+  // popup.classList.add('popup_opened');
+  // document.addEventListener('keydown', closeByEsc);
 }
 
 function hidePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEsc);
+  // popup.classList.remove('popup_opened');
+  // document.removeEventListener('keydown', closeByEsc);
 }
 
-function closeByEsc(evt) {
-  const openedPopup = document.querySelector('.popup_opened');
-  if (evt.key === 'Escape') {
-    hidePopup(openedPopup);
-  }
-}
+// function closeByEsc(evt) {
+//   const openedPopup = document.querySelector('.popup_opened');
+//   if (evt.key === 'Escape') {
+//     hidePopup(openedPopup);
+//   }
+// }
 
 function closeByOverlay() {
   overlays.forEach((overlayElement) => {
@@ -113,7 +119,8 @@ closeByOverlay();
 
 function createCardHandler(evt) {
   evt.preventDefault();
-  hidePopup(createPlaceMenu);
+  // hidePopup(createPlaceMenu);
+  addCardPopup.close();
 
   const card = new Card(
     { name: createMenuNameInput.value, link: createMenuLinkInput.value },
@@ -126,7 +133,8 @@ function createCardHandler(evt) {
 function editProfileHandler(evt) {
   evt.preventDefault();
 
-  hidePopup(editProfileMenu);
+  // hidePopup(editProfileMenu);
+  editProfilePopup.close();
 
   profileUserName.textContent = editProfileUserNameInput.value;
   profileUserBio.textContent = editProfileUserBioInput.value;
@@ -137,23 +145,26 @@ function editProfileHandler(evt) {
 
 // Кнопка Добавить карточку
 addBtn.addEventListener('click', function () {
-  showPopup(createPlaceMenu);
+  // showPopup(createPlaceMenu);
+  addCardPopup.open();
   createForm.reset();
   createFormEl.checkButtonState();
   createFormEl.clearInputsErrors();
 });
 
 // Кнопка закрыть меню добавления карточки
-closeCreateCardBtn.addEventListener('click', function () {
-  hidePopup(createPlaceMenu);
-});
+// closeCreateCardBtn.addEventListener('click', function () {
+//   // hidePopup(createPlaceMenu);
+//   addCardPopup.close();
+// });
 
 // Кнопка создать новую карточку
 createForm.addEventListener('submit', createCardHandler);
 
 // Кнопка редактировать профиль
 editBtn.addEventListener('click', function () {
-  showPopup(editProfileMenu);
+  // showPopup(editProfileMenu);
+  editProfilePopup.open();
   editProfileUserNameInput.value = profileUserName.textContent;
   editProfileUserBioInput.value = profileUserBio.textContent;
   editFormEl.checkButtonState();
