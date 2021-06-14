@@ -1,6 +1,8 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards } from './initial-сards.js';
+import { Section } from './Section.js';
+import { Popup } from './Popup.js';
 
 export { showPopup };
 
@@ -39,6 +41,8 @@ const closePhotoViewBtn = photoView.querySelector('.popup__close-btn');
 //Подключение к блоку с карточками
 const photoGridList = document.querySelector('.photo-grid__elements');
 
+// const cardTemplateSelector = document.querySelector('#photo-grid-template');
+
 // Конфигурация для валидатора
 const config = {
   formSelector: '.popup__form',
@@ -50,6 +54,18 @@ const config = {
 
 // ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 // ---------------------------------------------------------------------
+
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item, cardTemplateSelector) => {
+      const card = new Card(item, '#photo-grid-template');
+      const cardElement = card.generateCard();
+      return cardElement;
+    },
+  },
+  '.photo-grid__elements'
+);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
@@ -76,18 +92,14 @@ function closeByOverlay() {
   });
 }
 
-function renderCard(item, cardTemplateSelector) {
-  const card = new Card(item, cardTemplateSelector);
-  const cardElement = card.generateCard();
-  return cardElement;
-}
+// function renderCard(item, cardTemplateSelector) {
+//   const card = new Card(item, cardTemplateSelector);
+//   const cardElement = card.generateCard();
+//   return cardElement;
+// }
 
 // ВЫЗОВ ФУНКЦИЙ
 // ---------------------------------------------------------------------
-
-initialCards.forEach((item) => {
-  photoGridList.append(renderCard(item, '#photo-grid-template'));
-});
 
 const createFormEl = new FormValidator(config, createForm);
 createFormEl.enableValidation();
@@ -101,15 +113,14 @@ closeByOverlay();
 
 function createCardHandler(evt) {
   evt.preventDefault();
-
   hidePopup(createPlaceMenu);
 
-  photoGridList.prepend(
-    renderCard(
-      { name: createMenuNameInput.value, link: createMenuLinkInput.value },
-      '#photo-grid-template'
-    )
+  const card = new Card(
+    { name: createMenuNameInput.value, link: createMenuLinkInput.value },
+    '#photo-grid-template'
   );
+
+  cardSection.addItem(card.generateCard());
 }
 
 function editProfileHandler(evt) {
