@@ -1,5 +1,6 @@
 export class Popup {
   constructor(popupSelector) {
+    this._popupSelector = popupSelector;
     this.popupElement = document.querySelector(popupSelector);
   }
 
@@ -8,6 +9,12 @@ export class Popup {
 
     document.addEventListener('keydown', (evt) => {
       this._handleEscClose(evt);
+    });
+
+    this.popupElement.addEventListener('mousedown', (evt) => {
+      if (evt.target.id === this._popupSelector.substring(1)) {
+        this.close();
+      }
     });
   }
 
