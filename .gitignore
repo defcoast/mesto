@@ -2,3 +2,5 @@
 .vscode
 .idea
 bugfix.txt
+node_modules
+dist 
