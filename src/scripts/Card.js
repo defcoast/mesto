@@ -1,5 +1,3 @@
-import { showPopup } from './index.js';
-
 export default class Card {
   constructor(data, cardTemplateSelector, handleCardClick) {
     this._name = data.name;

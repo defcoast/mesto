@@ -21,7 +21,7 @@ export class PopupWithForm extends Popup {
     inputs.forEach((input) => {
       result[input.name] = input.value;
     });
-    // console.log(result);
+
     return result;
   }
 
@@ -33,7 +33,6 @@ export class PopupWithForm extends Popup {
 
       const cardData = this._getInputValues();
       this._submitFormCb(cardData);
-      // console.log(cardData);
     });
   }
 
