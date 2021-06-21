@@ -2,6 +2,7 @@ export default class Card {
   constructor(data, cardTemplateSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
+    this._data = data;
     this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
   }
@@ -44,7 +45,7 @@ export default class Card {
     });
 
     cardImage.addEventListener('click', () => {
-      this._handleViewPhoto();
+      this._handleCardClick(this._data);
     });
   }
 
@@ -55,16 +56,5 @@ export default class Card {
   _handleDeleteClick() {
     this._element.remove();
     this._element = null;
-  }
-
-  _handleViewPhoto() {
-    const photoView = document.querySelector('#view-popup');
-    const photoViewImage = photoView.querySelector('.popup__image');
-    const photoViewCaption = photoView.querySelector('.popup__caption');
-
-    this._handleCardClick();
-    photoViewImage.src = this._link;
-    photoViewCaption.textContent = this._name;
-    photoViewImage.alt = this._name;
   }
 }

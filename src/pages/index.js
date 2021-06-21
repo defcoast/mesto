@@ -39,7 +39,7 @@ const cardSection = new Section(
     items: initialCards,
     renderer: (cardData) => {
       const card = new Card(cardData, '#photo-grid-template', () => {
-        imagePopup.open();
+        imagePopup.open(cardData);
       });
       return card.generateCard();
     },
