@@ -33,19 +33,23 @@ const config = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active',
 };
-
 const cardSection = new Section(
   {
     items: initialCards,
+
     renderer: (cardData) => {
       const card = new Card(cardData, '#photo-grid-template', () => {
         imagePopup.open(cardData);
       });
-      return card.generateCard();
+
+      const newCard = card.generateCard();
+      cardSection.element.prepend(newCard);
     },
   },
   '.photo-grid__elements'
 );
+
+cardSection.renderAll();
 
 const addCardPopup = new PopupWithForm('#add-popup', (cardData) => {
   cardSection.addItem(cardData);
