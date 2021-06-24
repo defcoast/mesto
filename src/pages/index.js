@@ -16,14 +16,14 @@ const addBtn = profile.querySelector('.profile__add-btn');
 const editBtn = profile.querySelector('.profile__edit-btn');
 
 // Подключение к  меню редактирования профиля
-const editProfileMenu = document.querySelector('#edit-popup');
-const editProfileForm = editProfileMenu.querySelector('.popup__form');
-const editProfileUserNameInput = editProfileForm.querySelector('#username');
-const editProfileUserBioInput = editProfileForm.querySelector('#userbio');
+const popupProfile = document.querySelector('#edit-popup');
+const formPopupProfile = popupProfile.querySelector('.popup__form');
+const inputNamePopupProfile = formPopupProfile.querySelector('#username');
+const inputBioPopupProfile = formPopupProfile.querySelector('#userbio');
 
 // Подключение к меню создания новой карточки
-const createPlaceMenu = document.querySelector('#add-popup');
-const createForm = createPlaceMenu.querySelector('.popup__form');
+const popupCard = document.querySelector('#add-popup');
+const formPopupCard = popupCard.querySelector('.popup__form');
 
 // Конфигурация для валидатора
 const config = {
@@ -39,7 +39,7 @@ const cardSection = new Section(
 
     renderer: (cardData) => {
       const card = new Card(cardData, '#photo-grid-template', () => {
-        imagePopup.open(cardData);
+        popupViewImage.open(cardData);
       });
 
       const newCard = card.generateCard();
@@ -51,47 +51,47 @@ const cardSection = new Section(
 
 cardSection.renderAll();
 
-const addCardPopup = new PopupWithForm('#add-popup', (cardData) => {
+const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
   cardSection.addItem(cardData);
-  addCardPopup.close();
+  popupAddCard.close();
 });
 
-const editProfilePopup = new PopupWithForm('#edit-popup', (profileData) => {
+const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
   userInfo.setUserInfo(profileData);
-  editProfilePopup.close();
+  popupEditProfile.close();
 });
 
-const imagePopup = new PopupWithImage('#view-popup');
-imagePopup.setEventListeners();
+const popupViewImage = new PopupWithImage('#view-popup');
+popupViewImage.setEventListeners();
 
 const userInfo = new UserInfo({
   userNameElement: '.profile__username',
   userBioElement: '.profile__userbio',
 });
 
-const createFormEl = new FormValidator(config, createForm);
-createFormEl.enableValidation();
-const editFormEl = new FormValidator(config, editProfileForm);
-editFormEl.enableValidation();
+const formCardElement = new FormValidator(config, formPopupCard);
+formCardElement.enableValidation();
+const formProfileElement = new FormValidator(config, formPopupProfile);
+formProfileElement.enableValidation();
 
 // ОБРАБОТЧИКИ СОБЫТИЙ
 // ---------------------------------------------------------------------
 
 // Кнопка Добавить карточку
 addBtn.addEventListener('click', function () {
-  addCardPopup.open();
-  createFormEl.checkButtonState();
-  createFormEl.clearInputsErrors();
+  popupAddCard.open();
+  formCardElement.checkButtonState();
+  formCardElement.clearInputsErrors();
 });
 
 // Кнопка редактировать профиль
 editBtn.addEventListener('click', function () {
-  editProfilePopup.open();
+  popupEditProfile.open();
 
   const userProfileData = userInfo.getUserInfo();
-  editProfileUserNameInput.value = userProfileData.userName;
-  editProfileUserBioInput.value = userProfileData.userBio;
+  inputNamePopupProfile.value = userProfileData.userName;
+  inputBioPopupProfile.value = userProfileData.userBio;
 
-  editFormEl.checkButtonState();
-  editFormEl.clearInputsErrors();
+  formProfileElement.checkButtonState();
+  formProfileElement.clearInputsErrors();
 });
