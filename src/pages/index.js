@@ -1,11 +1,11 @@
 import './index.css';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
-import { initialCards } from '../components/initial-сards.js';
 import { Section } from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import {Api} from "../components/Api";
 
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 // ---------------------------------------------------------------------
@@ -33,65 +33,99 @@ const config = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active',
 };
-const cardSection = new Section(
-  {
-    items: initialCards,
 
-    renderer: (cardData) => {
-      const card = new Card(cardData, '#photo-grid-template', () => {
-        popupViewImage.open(cardData);
+//Настройки API
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-25',
+  headers: {
+    authorization: '786b7eb6-0454-4c7c-be53-f59c275d8c34',
+    'Content-Type': 'application/json'
+  }
+});
+
+
+// Принимаем карточки от сервера
+api.getInitialCards()
+    .then(cardData => {
+
+
+      // Отрисовка секции с карточками
+      const cardSection = new Section(
+        {
+
+          // Откуда брать данные для карточек
+          items: cardData,
+
+          // Настройки рендеринга карточек
+          renderer: (cardData) => {
+
+            // Создание экземпляра карточки
+            const card = new Card(cardData, '#photo-grid-template', () => {
+
+            // Обработчик клика по карточке
+              popupViewImage.open(cardData);
+            });
+
+            // Генерация и отрисовка карточек
+            const newCard = card.generateCard();
+            cardSection.element.prepend(newCard);
+          },
+        },
+
+        // В какой блок отрисовывать карточки
+        '.photo-grid__elements'
+      );
+
+      cardSection.renderAll();
+
+      // Попап создания новой карточки
+      const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
+        cardSection.addItem(cardData);
+        popupAddCard.close();
       });
 
-      const newCard = card.generateCard();
-      cardSection.element.prepend(newCard);
-    },
-  },
-  '.photo-grid__elements'
-);
+      // Попап редактирования профиля
+      const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
+        userInfo.setUserInfo(profileData);
+        popupEditProfile.close();
+      });
 
-cardSection.renderAll();
+      // Попап просмиотра изображений
+      const popupViewImage = new PopupWithImage('#view-popup');
+      popupViewImage.setEventListeners();
 
-const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
-  cardSection.addItem(cardData);
-  popupAddCard.close();
-});
+      // Блок профиля
+      const userInfo = new UserInfo({
+        userNameElement: '.profile__username',
+        userBioElement: '.profile__userbio',
+      });
 
-const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
-  userInfo.setUserInfo(profileData);
-  popupEditProfile.close();
-});
+      // Включение валидации
+      const formCardElement = new FormValidator(config, formPopupCard);
+      formCardElement.enableValidation();
+      const formProfileElement = new FormValidator(config, formPopupProfile);
+      formProfileElement.enableValidation();
 
-const popupViewImage = new PopupWithImage('#view-popup');
-popupViewImage.setEventListeners();
+      // ОБРАБОТЧИКИ СОБЫТИЙ
+      // ---------------------------------------------------------------------
 
-const userInfo = new UserInfo({
-  userNameElement: '.profile__username',
-  userBioElement: '.profile__userbio',
-});
+      // Кнопка Добавить карточку
+      addBtn.addEventListener('click', function () {
+        popupAddCard.open();
+        formCardElement.checkButtonState();
+        formCardElement.clearInputsErrors();
+      });
 
-const formCardElement = new FormValidator(config, formPopupCard);
-formCardElement.enableValidation();
-const formProfileElement = new FormValidator(config, formPopupProfile);
-formProfileElement.enableValidation();
+      // Кнопка редактировать профиль
+      editBtn.addEventListener('click', function () {
+        popupEditProfile.open();
 
-// ОБРАБОТЧИКИ СОБЫТИЙ
-// ---------------------------------------------------------------------
+        const userProfileData = userInfo.getUserInfo();
+        inputNamePopupProfile.value = userProfileData.userName;
+        inputBioPopupProfile.value = userProfileData.userBio;
 
-// Кнопка Добавить карточку
-addBtn.addEventListener('click', function () {
-  popupAddCard.open();
-  formCardElement.checkButtonState();
-  formCardElement.clearInputsErrors();
-});
+        formProfileElement.checkButtonState();
+        formProfileElement.clearInputsErrors();
+      });
 
-// Кнопка редактировать профиль
-editBtn.addEventListener('click', function () {
-  popupEditProfile.open();
-
-  const userProfileData = userInfo.getUserInfo();
-  inputNamePopupProfile.value = userProfileData.userName;
-  inputBioPopupProfile.value = userProfileData.userBio;
-
-  formProfileElement.checkButtonState();
-  formProfileElement.clearInputsErrors();
-});
+    });
