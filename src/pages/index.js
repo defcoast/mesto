@@ -88,8 +88,10 @@ api.getInitialCards()
 
       // Попап редактирования профиля
       const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
-        userInfo.setUserInfo(profileData);
-        popupEditProfile.close();
+          // Отправляем данные на сервер и изменяем данные профиля в шапке сайта
+          api.setUserInfo(profileData)
+          userInfo.setUserInfo(profileData);
+          popupEditProfile.close();
       });
 
       // Попап просмиотра изображений

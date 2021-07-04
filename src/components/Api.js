@@ -17,4 +17,17 @@ export class Api {
         })
             .then(res => res.json())
     }
+
+    setUserInfo(profileData) {
+        return fetch(`${this._url}/users/me`, {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify({
+                name: profileData.username,
+                about: profileData.userbio,
+            }),
+        })
+    }
+
+
 }
