@@ -10,4 +10,11 @@ export class Api {
         })
             .then(res => res.json())
     }
+
+    getUserInfo() {
+        return fetch(`${this._url}/users/me`, {
+            headers: this._headers
+        })
+            .then(res => res.json())
+    }
 }

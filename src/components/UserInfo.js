@@ -14,11 +14,8 @@ export class UserInfo {
     };
   }
   setUserInfo({ username, userbio }) {
-    const profile = document.querySelector('.profile');
-    const profileUserName = profile.querySelector('.profile__username');
-    const profileUserBio = profile.querySelector('.profile__userbio');
 
-    profileUserName.textContent = username;
-    profileUserBio.textContent = userbio;
+    this._userNameElement.textContent = username;
+    this._userBioElement.textContent = userbio;
   }
 }

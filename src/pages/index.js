@@ -14,6 +14,9 @@ import {Api} from "../components/Api";
 const profile = document.querySelector('.profile');
 const addBtn = profile.querySelector('.profile__add-btn');
 const editBtn = profile.querySelector('.profile__edit-btn');
+const profileUserName = profile.querySelector('.profile__username');
+const profileUserBio = profile.querySelector('.profile__userbio');
+const profileAvatar = profile.querySelector('.profile__avatar');
 
 // Подключение к  меню редактирования профиля
 const popupProfile = document.querySelector('#edit-popup');
@@ -42,7 +45,6 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
-
 
 // Принимаем карточки от сервера
 api.getInitialCards()
@@ -95,6 +97,15 @@ api.getInitialCards()
       popupViewImage.setEventListeners();
 
       // Блок профиля
+        //Получаем данные профиля от сервера
+        api.getUserInfo()
+            .then(userData => {
+                profileUserName.textContent = userData.name;
+                profileUserBio.textContent = userData.about;
+                profileAvatar.src = userData.avatar;
+            });
+
+      // Создаем экземпляр класса и передаем селекторы элементов
       const userInfo = new UserInfo({
         userNameElement: '.profile__username',
         userBioElement: '.profile__userbio',
@@ -127,5 +138,6 @@ api.getInitialCards()
         formProfileElement.checkButtonState();
         formProfileElement.clearInputsErrors();
       });
+
 
     });
