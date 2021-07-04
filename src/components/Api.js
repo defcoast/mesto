@@ -19,14 +19,25 @@ export class Api {
     }
 
     setUserInfo(profileData) {
-        return fetch(`${this._url}/users/me`, {
+         fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 name: profileData.username,
                 about: profileData.userbio,
             }),
-        })
+        });
+    }
+
+    addCard(cardData){
+         fetch(`${this._url}/cards`, {
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({
+                name: cardData.name,
+                link: cardData.link,
+            }),
+        });
     }
 
 

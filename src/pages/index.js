@@ -83,14 +83,15 @@ api.getInitialCards()
       // Попап создания новой карточки
       const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
         cardSection.addItem(cardData);
+        api.addCard(cardData)
         popupAddCard.close();
       });
 
       // Попап редактирования профиля
       const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
           // Отправляем данные на сервер и изменяем данные профиля в шапке сайта
-          api.setUserInfo(profileData)
           userInfo.setUserInfo(profileData);
+          api.setUserInfo(profileData)
           popupEditProfile.close();
       });
 
