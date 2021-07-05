@@ -28,6 +28,8 @@ const inputBioPopupProfile = formPopupProfile.querySelector('#userbio');
 const popupCard = document.querySelector('#add-popup');
 const formPopupCard = popupCard.querySelector('.popup__form');
 
+// Подключение к карточке
+
 // Конфигурация для валидатора
 const config = {
   formSelector: '.popup__form',
@@ -48,15 +50,14 @@ const api = new Api({
 
 // Принимаем карточки от сервера
 api.getInitialCards()
-    .then(cardData => {
-
+    .then(serverCardData => {
 
       // Отрисовка секции с карточками
       const cardSection = new Section(
         {
 
           // Откуда брать данные для карточек
-          items: cardData,
+          items: serverCardData,
 
           // Настройки рендеринга карточек
           renderer: (cardData) => {
@@ -66,7 +67,7 @@ api.getInitialCards()
 
             // Обработчик клика по карточке
               popupViewImage.open(cardData);
-            });
+            }, cardData.likes.length);
 
             // Генерация и отрисовка карточек
             const newCard = card.generateCard();
@@ -83,7 +84,7 @@ api.getInitialCards()
       // Попап создания новой карточки
       const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
         cardSection.addItem(cardData);
-        api.addCard(cardData)
+        api.addCard(cardData);
         popupAddCard.close();
       });
 

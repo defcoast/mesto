@@ -1,19 +1,18 @@
 export default class Card {
-  constructor(data, cardTemplateSelector, handleCardClick) {
+  constructor(data, cardTemplateSelector, handleCardClick, likeCount) {
     this._name = data.name;
     this._link = data.link;
     this._data = data;
     this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
+    this._likesCount = likeCount;
   }
 
   _getTemplate() {
-    const card = document
+    return  document
       .querySelector(this._cardTemplateSelector)
       .content.querySelector('.photo-grid__element')
       .cloneNode(true);
-
-    return card;
   }
 
   generateCard() {
@@ -21,10 +20,13 @@ export default class Card {
 
     const cardTitle = this._element.querySelector('.photo-grid__title');
     const cardImage = this._element.querySelector('.photo-grid__image');
+    const likesCount = this._element.querySelector('.photo-grid__like-count');
 
     cardTitle.textContent = this._name;
     cardImage.src = this._link;
     cardImage.alt = this._name;
+    likesCount.textContent = this._likesCount;
+
 
     this._setEventListeners();
 
