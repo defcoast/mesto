@@ -48,100 +48,126 @@ const api = new Api({
   }
 });
 
-// Принимаем карточки от сервера
-api.getInitialCards()
+let myUserId = null;
+
+api.getUserInfo().then((profileInfo) => {
+    myUserId = profileInfo._id;
+    // console.log(myUserId);
+
+    // Принимаем карточки от сервера
+    api.getInitialCards()
     .then(serverCardData => {
+        console.log(serverCardData)
 
-      // Отрисовка секции с карточками
-      const cardSection = new Section(
-        {
+        // Отрисовка секции с карточками
+        const cardSection = new Section(
+            {
 
-          // Откуда брать данные для карточек
-          items: serverCardData,
+                // Откуда брать данные для карточек
+                items: serverCardData,
 
-          // Настройки рендеринга карточек
-          renderer: (cardData) => {
+                // Настройки рендеринга карточек
+                renderer: (cardData) => {
 
-            // Создание экземпляра карточки
-            const card = new Card(cardData, '#photo-grid-template', () => {
+                    // Создание экземпляра карточки
+                    const card = new Card(cardData, myUserId,  '#photo-grid-template', () => {
 
-            // Обработчик клика по карточке
-              popupViewImage.open(cardData);
-            }, cardData.likes.length);
+                            // Обработчик клика по карточке
+                            popupViewImage.open(cardData);
+                        },
+                        cardData.likes.length,
 
-            // Генерация и отрисовка карточек
-            const newCard = card.generateCard();
-            cardSection.element.prepend(newCard);
-          },
-        },
+                        () => {
+                            popupConfirm.open(cardData);
+                        });
 
-        // В какой блок отрисовывать карточки
-        '.photo-grid__elements'
-      );
+                    // Генерация и отрисовка карточек
+                    const newCard = card.generateCard();
+                    cardSection.element.prepend(newCard);
+                },
+            },
 
-      cardSection.renderAll();
+            // В какой блок отрисовывать карточки
+            '.photo-grid__elements'
+        );
 
-      // Попап создания новой карточки
-      const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
-        cardSection.addItem(cardData);
-        api.addCard(cardData);
-        popupAddCard.close();
-      });
+        cardSection.renderAll();
 
-      // Попап редактирования профиля
-      const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
-          // Отправляем данные на сервер и изменяем данные профиля в шапке сайта
-          userInfo.setUserInfo(profileData);
-          api.setUserInfo(profileData)
-          popupEditProfile.close();
-      });
+        // Попап создания новой карточки
+        const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
+            // cardSection.addItem(cardData);
+            api.addCard(cardData)
+            console.log(cardData)
+            popupAddCard.close();
+        });
 
-      // Попап просмиотра изображений
-      const popupViewImage = new PopupWithImage('#view-popup');
-      popupViewImage.setEventListeners();
+        // Попап редактирования профиля
+        const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
+            // Отправляем данные на сервер и изменяем данные профиля в шапке сайта
+            userInfo.setUserInfo(profileData);
+            api.setUserInfo(profileData)
+            popupEditProfile.close();
+        });
 
-      // Блок профиля
+        // Попап просмотра изображений
+        const popupViewImage = new PopupWithImage('#view-popup');
+        popupViewImage.setEventListeners();
+
+        // Попап подтверждения удаления карточки
+        const popupConfirm = new PopupWithForm('#confirm-popup', (isConfirm) => {
+            if (isConfirm) {
+                popupConfirm.close();
+                // api.deleteCard();
+                console.log(cardData)
+            }
+        });
+        popupConfirm.setEventListeners();
+
+        // Блок профиля
         //Получаем данные профиля от сервера
         api.getUserInfo()
-            .then(userData => {
-                profileUserName.textContent = userData.name;
-                profileUserBio.textContent = userData.about;
-                profileAvatar.src = userData.avatar;
-            });
+        .then(userData => {
+            profileUserName.textContent = userData.name;
+            profileUserBio.textContent = userData.about;
+            profileAvatar.src = userData.avatar;
+        });
 
-      // Создаем экземпляр класса и передаем селекторы элементов
-      const userInfo = new UserInfo({
-        userNameElement: '.profile__username',
-        userBioElement: '.profile__userbio',
-      });
+        // Создаем экземпляр класса и передаем селекторы элементов
+        const userInfo = new UserInfo({
+            userNameElement: '.profile__username',
+            userBioElement: '.profile__userbio',
+        });
 
-      // Включение валидации
-      const formCardElement = new FormValidator(config, formPopupCard);
-      formCardElement.enableValidation();
-      const formProfileElement = new FormValidator(config, formPopupProfile);
-      formProfileElement.enableValidation();
+        // Включение валидации
+        const formCardElement = new FormValidator(config, formPopupCard);
+        formCardElement.enableValidation();
+        const formProfileElement = new FormValidator(config, formPopupProfile);
+        formProfileElement.enableValidation();
 
-      // ОБРАБОТЧИКИ СОБЫТИЙ
-      // ---------------------------------------------------------------------
+        // ОБРАБОТЧИКИ СОБЫТИЙ
+        // ---------------------------------------------------------------------
 
-      // Кнопка Добавить карточку
-      addBtn.addEventListener('click', function () {
-        popupAddCard.open();
-        formCardElement.checkButtonState();
-        formCardElement.clearInputsErrors();
-      });
+        // Кнопка Добавить карточку
+        addBtn.addEventListener('click', function () {
+            popupAddCard.open();
+            formCardElement.checkButtonState();
+            formCardElement.clearInputsErrors();
+        });
 
-      // Кнопка редактировать профиль
-      editBtn.addEventListener('click', function () {
-        popupEditProfile.open();
+        // Кнопка редактировать профиль
+        editBtn.addEventListener('click', function () {
+            popupEditProfile.open();
 
-        const userProfileData = userInfo.getUserInfo();
-        inputNamePopupProfile.value = userProfileData.userName;
-        inputBioPopupProfile.value = userProfileData.userBio;
+            const userProfileData = userInfo.getUserInfo();
+            inputNamePopupProfile.value = userProfileData.userName;
+            inputBioPopupProfile.value = userProfileData.userBio;
 
-        formProfileElement.checkButtonState();
-        formProfileElement.clearInputsErrors();
-      });
+            formProfileElement.checkButtonState();
+            formProfileElement.clearInputsErrors();
+        });
 
 
     });
+})
+
+

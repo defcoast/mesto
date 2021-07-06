@@ -1,11 +1,15 @@
 export default class Card {
-  constructor(data, cardTemplateSelector, handleCardClick, likeCount) {
+  constructor(data, userId, cardTemplateSelector, handleCardClick, likeCount, handleOpenPopup) {
     this._name = data.name;
     this._link = data.link;
     this._data = data;
     this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
     this._likesCount = likeCount;
+    this._handleOpenPopup = handleOpenPopup;
+    this._userId = userId;
+
+
   }
 
   _getTemplate() {
@@ -22,6 +26,12 @@ export default class Card {
     const cardImage = this._element.querySelector('.photo-grid__image');
     const likesCount = this._element.querySelector('.photo-grid__like-count');
 
+    this._delBtn = this._element.querySelector('.photo-grid__del-btn');
+
+    if (this._userId !== this._data.owner._id){
+      this._delBtn.remove()
+    }
+
     cardTitle.textContent = this._name;
     cardImage.src = this._link;
     cardImage.alt = this._name;
@@ -35,15 +45,14 @@ export default class Card {
 
   _setEventListeners() {
     const likeBtn = this._element.querySelector('.photo-grid__like-btn');
-    const delBtn = this._element.querySelector('.photo-grid__del-btn');
     const cardImage = this._element.querySelector('.photo-grid__image');
 
     likeBtn.addEventListener('click', () => {
       this._handleLikeClick(likeBtn);
     });
 
-    delBtn.addEventListener('click', () => {
-      this._handleDeleteClick();
+    this._delBtn.addEventListener('click', () => {
+      this._handleOpenPopup(this._data);
     });
 
     cardImage.addEventListener('click', () => {
