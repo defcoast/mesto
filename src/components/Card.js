@@ -1,13 +1,27 @@
 export default class Card {
-  constructor(data, userId, cardTemplateSelector, handleCardClick, likeCount, handleOpenPopup) {
+  constructor(
+    data,
+    userId,
+    cardTemplateSelector,
+    handleCardClick,
+    likeCount,
+    handleConfirmDelete,
+    likeCardCb,
+    unlikeCardCb,
+
+    )
+
+  {
     this._name = data.name;
     this._link = data.link;
     this._data = data;
     this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
     this._likesCount = likeCount;
-    this._handleOpenPopup = handleOpenPopup;
+    this._handleConfirmDelete = handleConfirmDelete;
     this._userId = userId;
+    this._handleLike = likeCardCb;
+    this._handleUnlike = unlikeCardCb;
 
 
   }
@@ -24,7 +38,7 @@ export default class Card {
 
     const cardTitle = this._element.querySelector('.photo-grid__title');
     const cardImage = this._element.querySelector('.photo-grid__image');
-    const likesCount = this._element.querySelector('.photo-grid__like-count');
+    this._likesCountElement = this._element.querySelector('.photo-grid__like-count');
 
     this._delBtn = this._element.querySelector('.photo-grid__del-btn');
 
@@ -35,7 +49,7 @@ export default class Card {
     cardTitle.textContent = this._name;
     cardImage.src = this._link;
     cardImage.alt = this._name;
-    likesCount.textContent = this._likesCount;
+    this._likesCountElement.textContent = this._likesCount;
 
 
     this._setEventListeners();
@@ -44,15 +58,15 @@ export default class Card {
   }
 
   _setEventListeners() {
-    const likeBtn = this._element.querySelector('.photo-grid__like-btn');
+    this._likeBtn = this._element.querySelector('.photo-grid__like-btn');
     const cardImage = this._element.querySelector('.photo-grid__image');
 
-    likeBtn.addEventListener('click', () => {
-      this._handleLikeClick(likeBtn);
+    this._likeBtn.addEventListener('click', () => {
+      this._handleLikeClick(this._likeBtn);
     });
 
     this._delBtn.addEventListener('click', () => {
-      this._handleOpenPopup(this._data);
+      this._handleConfirmDelete(this._data);
     });
 
     cardImage.addEventListener('click', () => {
@@ -62,6 +76,26 @@ export default class Card {
 
   _handleLikeClick(likeButton) {
     likeButton.classList.toggle('like-btn_active');
+
+    if (this._likeBtn.classList.contains('like-btn_active')) {
+      // console.log('+1');
+      // console.log(this._data.likes)
+      this._handleLike(this._data);
+      this._likesCountElement.textContent = this._likesCount + 1;
+      // console.log(this._likesCount)
+    }
+    else {
+      // console.log(this._likesCount, '-1 лайка этой карточке');
+      this._handleUnlike(this._data);
+      let currentLikeCount = this._likesCount - 1;
+      if (currentLikeCount < 0) {
+        this._likesCountElement.textContent = 0;
+      }
+      else {
+        this._likesCountElement.textContent = currentLikeCount;
+      }
+    }
+
   }
 
   _handleDeleteClick() {

@@ -77,9 +77,27 @@ api.getUserInfo().then((profileInfo) => {
                         },
                         cardData.likes.length,
 
-                        () => {
+                        (cardData) => {
                             popupConfirm.open(cardData);
-                        });
+                            if (cardData) {
+                                api.deleteCard(cardData)
+                            }
+
+                        },(carData) => {
+                            // carData.likes.length + 1;
+                            api.likeCard(cardData).then(res => res.json()).then((data) => {
+                                console.log(data)
+                            })
+                        },
+
+                        (cardData) => {
+                            // console.log('test')
+                            api.unlikeCard(cardData).then(res => res.json()).then((data) => {
+                                console.log(data)
+                            })
+                        }
+
+                    );
 
                     // Генерация и отрисовка карточек
                     const newCard = card.generateCard();
@@ -118,7 +136,6 @@ api.getUserInfo().then((profileInfo) => {
             if (isConfirm) {
                 popupConfirm.close();
                 // api.deleteCard();
-                console.log(cardData)
             }
         });
         popupConfirm.setEventListeners();

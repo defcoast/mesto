@@ -47,5 +47,19 @@ export class Api {
         });
     }
 
+    likeCard(cardData){
+        return fetch(`${this._url}/cards/likes/${cardData._id}`, {
+            method: 'PUT',
+            headers: this._headers,
+        });
+    }
+
+    unlikeCard(cardData){
+        return fetch(`${this._url}/cards/likes/${cardData._id}`, {
+            method: 'DELETE',
+            headers: this._headers,
+        });
+    }
+
 
 }
