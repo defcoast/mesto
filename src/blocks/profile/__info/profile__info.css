@@ -1,4 +1,5 @@
 .profile__info {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(min-content, max-content));
   grid-template-rows: repeat(2, 60px);

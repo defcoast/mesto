@@ -43,6 +43,8 @@
 /* elements */
 @import url(../blocks/profile/__row/profile__row.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__avatar-overlay/profile__avatar-overlay.css);
+@import url(../blocks/profile/__edit-avatar-btn/profile__edit-avatar-btn.css);
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__userbio/profile__userbio.css);
 @import url(../blocks/profile/__username/profile__username.css);
