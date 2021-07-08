@@ -17,6 +17,7 @@ const editBtn = profile.querySelector('.profile__edit-btn');
 const profileUserName = profile.querySelector('.profile__username');
 const profileUserBio = profile.querySelector('.profile__userbio');
 const profileAvatar = profile.querySelector('.profile__avatar');
+const btnEditProfile = profile.querySelector('.profile__edit-avatar-btn');
 
 // Подключение к  меню редактирования профиля
 const popupProfile = document.querySelector('#edit-popup');
@@ -83,7 +84,7 @@ api.getUserInfo().then((profileInfo) => {
                                 api.deleteCard(cardData)
                             }
 
-                        },(carData) => {
+                        },(cardData) => {
                             // carData.likes.length + 1;
                             api.likeCard(cardData).then(res => res.json()).then((data) => {
                                 console.log(data)
@@ -140,6 +141,12 @@ api.getUserInfo().then((profileInfo) => {
         });
         popupConfirm.setEventListeners();
 
+        const popupUpdateAvatar = new PopupWithForm('#update-avatar-popup', (linkAvatar) => {
+            api.updateAvatar(linkAvatar);
+            popupUpdateAvatar.close()
+        });
+        popupUpdateAvatar.setEventListeners();
+
         // Блок профиля
         //Получаем данные профиля от сервера
         api.getUserInfo()
@@ -182,6 +189,12 @@ api.getUserInfo().then((profileInfo) => {
             formProfileElement.checkButtonState();
             formProfileElement.clearInputsErrors();
         });
+
+        // Кнопка редактировать аватар
+        btnEditProfile.addEventListener('click', () => {
+            console.log('click to pen');
+            popupUpdateAvatar.open();
+        })
 
 
     });
