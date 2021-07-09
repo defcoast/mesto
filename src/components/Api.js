@@ -19,50 +19,51 @@ export class Api {
     }
 
     setUserInfo(profileData) {
-         fetch(`${this._url}/users/me`, {
+         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 name: profileData.username,
                 about: profileData.userbio,
             }),
-        });
+        })
     }
 
     addCard(cardData){
-         fetch(`${this._url}/cards`, {
+         return fetch(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
                 name: cardData.name,
                 link: cardData.link,
             }),
-        });
+        })
     }
 
     deleteCard(cardData){
-        fetch(`${this._url}/cards/${cardData._id}`, {
+        console.log(cardData._id)
+        return  fetch(`${this._url}/cards/${cardData._id}`, {
             method: 'DELETE',
             headers: this._headers,
-        });
+        })
     }
 
     likeCard(cardData){
         return fetch(`${this._url}/cards/likes/${cardData._id}`, {
             method: 'PUT',
             headers: this._headers,
-        });
+        })
     }
 
     unlikeCard(cardData){
         return fetch(`${this._url}/cards/likes/${cardData._id}`, {
             method: 'DELETE',
             headers: this._headers,
-        });
+        })
     }
 
     updateAvatar(linkAvatar) {
-        console.log(linkAvatar)
+        // console.log(linkAvatar)
         return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,

@@ -17,7 +17,7 @@ const editBtn = profile.querySelector('.profile__edit-btn');
 const profileUserName = profile.querySelector('.profile__username');
 const profileUserBio = profile.querySelector('.profile__userbio');
 const profileAvatar = profile.querySelector('.profile__avatar');
-const btnEditProfile = profile.querySelector('.profile__edit-avatar-btn');
+const btnEditAvatar = profile.querySelector('.profile__edit-avatar-btn');
 
 // Подключение к  меню редактирования профиля
 const popupProfile = document.querySelector('#edit-popup');
@@ -71,20 +71,33 @@ api.getUserInfo().then((profileInfo) => {
                 renderer: (cardData) => {
 
                     // Создание экземпляра карточки
-                    const card = new Card(cardData, myUserId,  '#photo-grid-template', () => {
+                    const card = new Card(cardData, myUserId,  '#photo-grid-template',
 
+                        () => {
                             // Обработчик клика по карточке
                             popupViewImage.open(cardData);
                         },
-                        cardData.likes.length,
+
 
                         (cardData) => {
-                            popupConfirm.open(cardData);
-                            if (cardData) {
-                                api.deleteCard(cardData)
-                            }
+                            const popupConfirm = new PopupWithForm('#confirm-popup', (confirmData) => {
+                                if (confirmData) {
+                                    popupConfirm.close();
+                                    api.deleteCard(cardData)
+                                    .then((res) => {
+                                        if (res.ok) {
+                                            card.deleteCard();
+                                        }
+                                    })
+                                }
+                            });
 
-                        },(cardData) => {
+                            popupConfirm.open(cardData);
+
+
+                        },
+
+                        (cardData) => {
                             // carData.likes.length + 1;
                             api.likeCard(cardData).then(res => res.json()).then((data) => {
                                 console.log(data)
@@ -96,13 +109,14 @@ api.getUserInfo().then((profileInfo) => {
                             api.unlikeCard(cardData).then(res => res.json()).then((data) => {
                                 console.log(data)
                             })
-                        }
+                        },
 
+                        cardData.likes.length
                     );
 
                     // Генерация и отрисовка карточек
                     const newCard = card.generateCard();
-                    cardSection.element.prepend(newCard);
+                    cardSection.element.append(newCard);
                 },
             },
 
@@ -114,38 +128,68 @@ api.getUserInfo().then((profileInfo) => {
 
         // Попап создания новой карточки
         const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
+            popupAddCard.submitBtn.textContent = 'Сохранение...';
             // cardSection.addItem(cardData);
             api.addCard(cardData)
+                .then((res) => {
+                    if (res.ok) {
+                        popupAddCard.submitBtn.textContent = 'Сохранение...';
+                        return res.json();
+                    }
+                })
+                .then((updateCardData) => {
+                    cardSection.addItem(updateCardData)
+
+                })
+                .catch((err) => {
+                    console.log('Ошибка сервера: ', err)
+                })
+                .finally(() => {
+                    popupAddCard.close();
+                });
             console.log(cardData)
-            popupAddCard.close();
         });
 
         // Попап редактирования профиля
         const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
             // Отправляем данные на сервер и изменяем данные профиля в шапке сайта
-            userInfo.setUserInfo(profileData);
             api.setUserInfo(profileData)
-            popupEditProfile.close();
+                .then((res) => {
+                    if (res.ok) {
+                        userInfo.setUserInfo(profileData);
+                        popupEditProfile.submitBtn.textContent = 'Сохранение...';
+                    }
+                })
+                .catch((err) => {
+                    console.log('Ошибка сервера: ', err)
+                })
+                .finally(() => {
+                    popupEditProfile.close();
+                })
         });
 
         // Попап просмотра изображений
         const popupViewImage = new PopupWithImage('#view-popup');
         popupViewImage.setEventListeners();
 
-        // Попап подтверждения удаления карточки
-        const popupConfirm = new PopupWithForm('#confirm-popup', (isConfirm) => {
-            if (isConfirm) {
-                popupConfirm.close();
-                // api.deleteCard();
-            }
-        });
-        popupConfirm.setEventListeners();
-
         const popupUpdateAvatar = new PopupWithForm('#update-avatar-popup', (linkAvatar) => {
-            api.updateAvatar(linkAvatar);
-            popupUpdateAvatar.close()
+            api.updateAvatar(linkAvatar)
+                .then((res) => {
+                    if (res.ok) {
+                        popupUpdateAvatar.submitBtn.textContent = 'Сохранение...';
+                        profileAvatar.src = linkAvatar.link;
+                    }
+                })
+                .catch((err) => {
+                    console.log('Ошибка сервера: ', err);
+                })
+                .finally(() => {
+                    popupUpdateAvatar.close();
+                });
         });
         popupUpdateAvatar.setEventListeners();
+
+
 
         // Блок профиля
         //Получаем данные профиля от сервера
@@ -191,8 +235,8 @@ api.getUserInfo().then((profileInfo) => {
         });
 
         // Кнопка редактировать аватар
-        btnEditProfile.addEventListener('click', () => {
-            console.log('click to pen');
+        btnEditAvatar.addEventListener('click', () => {
+            // console.log('click to pen');
             popupUpdateAvatar.open();
         })
 

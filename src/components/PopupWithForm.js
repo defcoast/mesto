@@ -10,6 +10,8 @@ export class PopupWithForm extends Popup {
     this._createMenuNameInput = this._formElement.querySelector('#name');
     this._createMenuLinkInput = this._formElement.querySelector('#link');
 
+    this.submitBtn = this._formElement.querySelector('.popup__save-btn');
+
     this.setEventListeners();
   }
 
