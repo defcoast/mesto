@@ -77,8 +77,7 @@ export default class Card {
   }
 
   _handleLikeClick(likeButton) {
-    console.log(this._likesCount)
-    this._toggleLikeBtn(likeButton)
+    this._toggleLikeBtn(likeButton);
 
     if (this._likeBtn.classList.contains('like-btn_active')) {
       this._handleLike(this._data);
