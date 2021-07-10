@@ -22,11 +22,6 @@ export default class Card {
     this._userId = userId;
     this._handleLike = likeCardCb;
     this._handleUnlike = unlikeCardCb;
-
-
-
-
-
   }
 
   _getTemplate() {
@@ -52,14 +47,12 @@ export default class Card {
 
     if (this._data.likes.find(item => item._id === this._userId)) {
       this._toggleLikeBtn(this._likeBtn);
-
     }
 
     cardTitle.textContent = this._name;
     cardImage.src = this._link;
     cardImage.alt = this._name;
     this._likesCountElement.textContent = this._likesCount;
-
 
     this._setEventListeners();
 
@@ -75,7 +68,6 @@ export default class Card {
     });
 
     this._delBtn.addEventListener('click', () => {
-      console.log('click')
       this._handleDeleteClick(this._data);
     });
 
@@ -85,17 +77,14 @@ export default class Card {
   }
 
   _handleLikeClick(likeButton) {
+    console.log(this._likesCount)
     this._toggleLikeBtn(likeButton)
 
     if (this._likeBtn.classList.contains('like-btn_active')) {
-      // console.log('+1');
-      // console.log(this._data.likes)
       this._handleLike(this._data);
       this._likesCountElement.textContent = this._likesCount + 1;
-      // console.log(this._likesCount)
     }
     else {
-      // console.log(this._likesCount, '-1 лайка этой карточке');
       this._handleUnlike(this._data);
       let currentLikeCount = this._likesCount - 1;
       if (currentLikeCount < 0) {
