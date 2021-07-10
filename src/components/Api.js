@@ -41,7 +41,6 @@ export class Api {
     }
 
     deleteCard(cardData){
-        console.log(cardData._id)
         return  fetch(`${this._url}/cards/${cardData._id}`, {
             method: 'DELETE',
             headers: this._headers,
@@ -63,7 +62,6 @@ export class Api {
     }
 
     updateAvatar(linkAvatar) {
-        // console.log(linkAvatar)
         return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,

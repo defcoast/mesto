@@ -42,4 +42,11 @@ export class PopupWithForm extends Popup {
     super.close();
     this._formElement.reset();
   }
+
+  setSubmitAction(submitAction, card) {
+    this.submitAction = submitAction;
+    this.card = card;
+
+  }
+
 }
