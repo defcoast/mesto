@@ -4,7 +4,7 @@ export default class Card {
       userId,
       cardTemplateSelector,
       handleCardClick,
-      handleConfirmDelete,
+      handleDeleteClick,
       likeCardCb,
       unlikeCardCb,
       likeCount,
@@ -18,7 +18,7 @@ export default class Card {
     this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
     this._likesCount = likeCount;
-    this._handleConfirmDelete = handleConfirmDelete;
+    this._handleDeleteClick = handleDeleteClick;
     this._userId = userId;
     this._handleLike = likeCardCb;
     this._handleUnlike = unlikeCardCb;
@@ -76,7 +76,7 @@ export default class Card {
 
     this._delBtn.addEventListener('click', () => {
       console.log('click')
-      this._handleConfirmDelete(this._data);
+      this._handleDeleteClick(this._data);
     });
 
     cardImage.addEventListener('click', () => {
@@ -115,5 +115,6 @@ export default class Card {
   deleteCard() {
     this._element.remove();
     this._element = null;
+
   }
 }
