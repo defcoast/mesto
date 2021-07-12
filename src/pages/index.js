@@ -62,11 +62,16 @@ Promise.all([
 	let myUserId = null;
 	myUserId = userData._id;
 
-	//Получаем данные профиля от сервера
-	profileUserName.textContent = userData.name;
-	profileUserBio.textContent = userData.about;
-	profileAvatar.src = userData.avatar;
+	// Создаем экземпляр класса и передаем селекторы элементов
+	const userInfo = new UserInfo({
+		userNameElement: '.profile__username',
+		userBioElement: '.profile__userbio',
+		userAvatarElement: '.profile__avatar',
+	});
 
+	// Отрисовка пользовательских данных
+	userInfo.setUserInfo(userData.name, userData.about, userData.avatar, userData._id);
+	console.log(userData._id)
 
 	// Отрисовка секции с карточками
 	const cardSection = new Section(
@@ -90,7 +95,7 @@ Promise.all([
 					(cardData) => {
 
 						popupConfirm.open();
-						popupConfirm.setSubmitAction(cardData, card);
+						popupConfirm.setData(cardData, card);
 
 					},
 
@@ -167,6 +172,7 @@ Promise.all([
 		.catch((err) => {
 			console.log('Ошибка сервера: ', err);
 		})
+
 		.finally(() => {
 			popupUpdateAvatar.close();
 			popupUpdateAvatar.submitBtn.textContent = 'Сохранить';
@@ -176,7 +182,7 @@ Promise.all([
 	// Попап подтверждения удаления карточки
 	const popupConfirm = new PopupWithForm('#confirm-popup', (confirmData) => {
 		if (confirmData) {
-			api.deleteCard(popupConfirm.submitAction)
+			api.deleteCard(popupConfirm.data)
 			.then((res) => {
 					popupConfirm.card.deleteCard();
 					popupConfirm.close();
@@ -189,11 +195,7 @@ Promise.all([
 	},);
 
 
-	// Создаем экземпляр класса и передаем селекторы элементов
-	const userInfo = new UserInfo({
-		userNameElement: '.profile__username',
-		userBioElement: '.profile__userbio',
-	});
+
 
 	// ВКЛЮЧЕНИЕ ВАЛИДАЦИИ
 	// Валидация формы создания карточки
