@@ -4,18 +4,25 @@ export class Api {
         this._headers = options.headers;
     }
 
+    _checkResponse(res) {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+    }
+
     getInitialCards() {
         return fetch(`${this._url}/cards`, {
             headers: this._headers
         })
-            .then(res => res.json())
+            .then(this._checkResponse)
     }
 
     getUserInfo() {
         return fetch(`${this._url}/users/me`, {
             headers: this._headers
         })
-            .then(res => res.json())
+        .then(this._checkResponse)
     }
 
     setUserInfo(profileData) {
@@ -27,6 +34,7 @@ export class Api {
                 about: profileData.userbio,
             }),
         })
+            .then(this._checkResponse)
     }
 
     addCard(cardData){
@@ -38,6 +46,7 @@ export class Api {
                 link: cardData.link,
             }),
         })
+         .then(this._checkResponse)
     }
 
     deleteCard(cardData){
@@ -45,6 +54,7 @@ export class Api {
             method: 'DELETE',
             headers: this._headers,
         })
+        .then(this._checkResponse)
     }
 
     likeCard(cardData){
@@ -52,6 +62,7 @@ export class Api {
             method: 'PUT',
             headers: this._headers,
         })
+        .then(this._checkResponse)
     }
 
     unlikeCard(cardData){
@@ -59,6 +70,7 @@ export class Api {
             method: 'DELETE',
             headers: this._headers,
         })
+        .then(this._checkResponse)
     }
 
     updateAvatar(linkAvatar) {
@@ -69,6 +81,7 @@ export class Api {
                 avatar: linkAvatar.link,
             }),
         })
+        .then(this._checkResponse)
     }
 
 

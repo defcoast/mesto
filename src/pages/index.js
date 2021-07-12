@@ -120,13 +120,8 @@ Promise.all([
 	// Попап создания новой карточки
 	const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
 		api.addCard(cardData)
-		.then((res) => {
-			if (res.ok) {
-				popupAddCard.submitBtn.textContent = 'Сохранение...';
-				return res.json();
-			}
-		})
 		.then((updateCardData) => {
+			popupAddCard.submitBtn.textContent = 'Сохранение...';
 			cardSection.addItem(updateCardData)
 
 		})
@@ -144,10 +139,8 @@ Promise.all([
 		// Отправляем данные на сервер и изменяем данные профиля в шапке сайта
 		api.setUserInfo(profileData)
 		.then((res) => {
-			if (res.ok) {
 				userInfo.setUserInfo(profileData);
 				popupEditProfile.submitBtn.textContent = 'Сохранение...';
-			}
 		})
 		.catch((err) => {
 			console.log('Ошибка сервера: ', err)
@@ -185,10 +178,8 @@ Promise.all([
 		if (confirmData) {
 			api.deleteCard(popupConfirm.submitAction)
 			.then((res) => {
-				if (res.ok) {
 					popupConfirm.card.deleteCard();
 					popupConfirm.close();
-				}
 			})
 			.catch((err) => {
 				console.log(err);
