@@ -5,11 +5,23 @@ export class Section {
     this.element = document.querySelector(containerSelector);
   }
 
-  renderAll() {
+  renderAll () {
     this._items.forEach((item) => this._renderer(item));
   }
 
-  addItem(cardData) {
+  addItem (cardData) {
     this._renderer(cardData);
   }
+
+  appendItem (card) {
+    this.element.append(card);
+  }
+
+  prependItem (card) {
+    this.element.prepend(card);
+  }
+
 }
+
+
+

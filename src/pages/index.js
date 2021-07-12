@@ -5,44 +5,25 @@ import {Section} from '../components/Section.js';
 import {PopupWithImage} from '../components/PopupWithImage.js';
 import {PopupWithForm} from '../components/PopupWithForm.js';
 import {UserInfo} from '../components/UserInfo.js';
-import {Api} from "../components/Api";
+import {Api} from "../components/Api.js";
 
-//ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
-// ---------------------------------------------------------------------
+import {
+	profile,
+	addBtn,
+	editBtn,
+	profileAvatar,
+	btnEditAvatar,
+	popupProfile,
+	formPopupProfile,
+	inputNamePopupProfile,
+	inputBioPopupProfile,
+	popupCard,
+	formPopupCard,
+	popupUpdateAvatar,
+	formUpdateAvatar,
+	config,
+} from '../utils/constants.js'
 
-// Подключение к блоку PROFILE
-const profile = document.querySelector('.profile');
-const addBtn = profile.querySelector('.profile__add-btn');
-const editBtn = profile.querySelector('.profile__edit-btn');
-const profileUserName = profile.querySelector('.profile__username');
-const profileUserBio = profile.querySelector('.profile__userbio');
-const profileAvatar = profile.querySelector('.profile__avatar');
-const btnEditAvatar = profile.querySelector('.profile__edit-avatar-btn');
-
-// Подключение к  меню редактирования профиля
-const popupProfile = document.querySelector('#edit-popup');
-const formPopupProfile = popupProfile.querySelector('.popup__form');
-const inputNamePopupProfile = formPopupProfile.querySelector('#username');
-const inputBioPopupProfile = formPopupProfile.querySelector('#userbio');
-
-// Подключение к меню создания новой карточки
-const popupCard = document.querySelector('#add-popup');
-const formPopupCard = popupCard.querySelector('.popup__form');
-
-// Подключение к меню создания смены аватара
-const popupUpdateAvatar = document.querySelector('#update-avatar-popup');
-const formUpdateAvatar = popupUpdateAvatar.querySelector('.popup__form');
-
-// Подключение к карточке
-
-// Конфигурация для валидатора
-const config = {
-	formSelector: '.popup__form',
-	inputSelector: '.popup__input',
-	submitButtonSelector: '.popup__save-btn',
-	inputErrorClass: 'popup__input_type_error',
-	errorClass: 'popup__input-error_active',
-};
 
 //Настройки API
 const api = new Api({
@@ -52,6 +33,8 @@ const api = new Api({
 		'Content-Type': 'application/json'
 	}
 });
+
+
 
 Promise.all([
 	api.getUserInfo(),
@@ -71,7 +54,6 @@ Promise.all([
 
 	// Отрисовка пользовательских данных
 	userInfo.setUserInfo(userData.name, userData.about, userData.avatar, userData._id);
-	console.log(userData._id)
 
 	// Отрисовка секции с карточками
 	const cardSection = new Section(
@@ -100,11 +82,23 @@ Promise.all([
 					},
 
 					(cardData) => {
-						api.likeCard(cardData);
+						api.likeCard(cardData)
+							.then((res) => {
+								//тут будет обработка лайка после успешного запроса
+							})
+							.catch((err) => {
+								console.log(err)
+							})
 					},
 
 					(cardData) => {
 						api.unlikeCard(cardData)
+							.then((res) => {
+								//тут будет обработка дизлайка после успешного запроса
+							})
+							.catch((err) => {
+								console.log(err)
+							})
 					},
 
 					cardData.likes.length
@@ -112,7 +106,7 @@ Promise.all([
 
 				// Генерация и отрисовка карточек
 				const newCard = card.generateCard();
-				cardSection.element.append(newCard);
+				cardSection.appendItem(newCard);
 			},
 		},
 
@@ -124,17 +118,19 @@ Promise.all([
 
 	// Попап создания новой карточки
 	const popupAddCard = new PopupWithForm('#add-popup', (cardData) => {
+		popupAddCard.submitBtn.textContent = 'Сохранение...';
+
 		api.addCard(cardData)
 		.then((updateCardData) => {
-			popupAddCard.submitBtn.textContent = 'Сохранение...';
 			cardSection.addItem(updateCardData)
+			// cardSection.prependItem(updateCardData)
+			popupAddCard.close();
 
 		})
 		.catch((err) => {
 			console.log('Ошибка сервера: ', err)
 		})
 		.finally(() => {
-			popupAddCard.close();
 			popupAddCard.submitBtn.textContent = 'Создать';
 		});
 	});
@@ -142,16 +138,17 @@ Promise.all([
 	// Попап редактирования профиля
 	const popupEditProfile = new PopupWithForm('#edit-popup', (profileData) => {
 		// Отправляем данные на сервер и изменяем данные профиля в шапке сайта
+		popupEditProfile.submitBtn.textContent = 'Сохранение...';
+
 		api.setUserInfo(profileData)
 		.then((res) => {
 				userInfo.setUserInfo(profileData);
-				popupEditProfile.submitBtn.textContent = 'Сохранение...';
+				popupEditProfile.close();
 		})
 		.catch((err) => {
 			console.log('Ошибка сервера: ', err)
 		})
 		.finally(() => {
-			popupEditProfile.close();
 			popupEditProfile.submitBtn.textContent = 'Сохранить';
 		})
 	});
@@ -162,19 +159,19 @@ Promise.all([
 
 	// Попап смены аватара
 	const popupUpdateAvatar = new PopupWithForm('#update-avatar-popup', (linkAvatar) => {
+		popupUpdateAvatar.submitBtn.textContent = 'Сохранение...';
+
 		api.updateAvatar(linkAvatar)
 		.then((res) => {
-			if (res.ok) {
-				popupUpdateAvatar.submitBtn.textContent = 'Сохранение...';
-				profileAvatar.src = linkAvatar.link;
-			}
+			// profileAvatar.src = linkAvatar.link;
+			userInfo.setAvatar(linkAvatar.link)
+			popupUpdateAvatar.close();
 		})
 		.catch((err) => {
 			console.log('Ошибка сервера: ', err);
 		})
 
 		.finally(() => {
-			popupUpdateAvatar.close();
 			popupUpdateAvatar.submitBtn.textContent = 'Сохранить';
 		});
 	});
