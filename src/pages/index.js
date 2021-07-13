@@ -8,20 +8,15 @@ import {UserInfo} from '../components/UserInfo.js';
 import {Api} from "../components/Api.js";
 
 import {
-	profile,
 	addBtn,
-	editBtn,
-	profileAvatar,
 	btnEditAvatar,
-	popupProfile,
-	formPopupProfile,
-	inputNamePopupProfile,
-	inputBioPopupProfile,
-	popupCard,
-	formPopupCard,
-	popupUpdateAvatar,
-	formUpdateAvatar,
 	config,
+	editBtn,
+	formPopupCard,
+	formPopupProfile,
+	formUpdateAvatar,
+	inputBioPopupProfile,
+	inputNamePopupProfile,
 } from '../utils/constants.js'
 
 
@@ -65,48 +60,10 @@ Promise.all([
 			// Настройки рендеринга карточек
 			renderer: (cardData) => {
 
-				// Создание экземпляра карточки
-				const card = new Card(cardData, myUserId, '#photo-grid-template',
+				const card = createCard(cardData);
 
-					() => {
-						// Обработчик клика по карточке
-						popupViewImage.open(cardData);
-					},
-
-
-					(cardData) => {
-
-						popupConfirm.open();
-						popupConfirm.setData(cardData, card);
-
-					},
-
-					(cardData) => {
-						api.likeCard(cardData)
-							.then((res) => {
-								//тут будет обработка лайка после успешного запроса
-							})
-							.catch((err) => {
-								console.log(err)
-							})
-					},
-
-					(cardData) => {
-						api.unlikeCard(cardData)
-							.then((res) => {
-								//тут будет обработка дизлайка после успешного запроса
-							})
-							.catch((err) => {
-								console.log(err)
-							})
-					},
-
-					cardData.likes.length
-				);
-
-				// Генерация и отрисовка карточек
-				const newCard = card.generateCard();
-				cardSection.appendItem(newCard);
+				// Отрисовка карточек
+				cardSection.appendItem(card);
 			},
 		},
 
@@ -122,8 +79,9 @@ Promise.all([
 
 		api.addCard(cardData)
 		.then((updateCardData) => {
-			cardSection.addItem(updateCardData)
-			// cardSection.prependItem(updateCardData)
+			const card = createCard(updateCardData)
+			cardSection.prependItem(card);
+
 			popupAddCard.close();
 
 		})
@@ -141,7 +99,7 @@ Promise.all([
 		popupEditProfile.submitBtn.textContent = 'Сохранение...';
 
 		api.setUserInfo(profileData)
-		.then((res) => {
+		.then(() => {
 				userInfo.setUserInfo(profileData);
 				popupEditProfile.close();
 		})
@@ -162,8 +120,7 @@ Promise.all([
 		popupUpdateAvatar.submitBtn.textContent = 'Сохранение...';
 
 		api.updateAvatar(linkAvatar)
-		.then((res) => {
-			// profileAvatar.src = linkAvatar.link;
+		.then(() => {
 			userInfo.setAvatar(linkAvatar.link)
 			popupUpdateAvatar.close();
 		})
@@ -180,7 +137,7 @@ Promise.all([
 	const popupConfirm = new PopupWithForm('#confirm-popup', (confirmData) => {
 		if (confirmData) {
 			api.deleteCard(popupConfirm.data)
-			.then((res) => {
+			.then(() => {
 					popupConfirm.card.deleteCard();
 					popupConfirm.close();
 			})
@@ -191,8 +148,50 @@ Promise.all([
 		}
 	},);
 
+	function createCard (cardData) {
+		const card = new Card(cardData, myUserId, '#photo-grid-template',
+
+			() => {
+				// Обработчик клика по карточке
+				popupViewImage.open(cardData);
+			},
 
 
+			(cardData) => {
+
+				popupConfirm.open();
+				popupConfirm.setData(cardData, card);
+
+			},
+
+			(cardData) => {
+				api.likeCard(cardData)
+				.then((res) => {
+					card.likesCountElement.textContent = res.likes.length;
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+			},
+
+			(cardData) => {
+				api.unlikeCard(cardData)
+				.then((res) => {
+					console.log(res.likes.length)
+					card.likesCountElement.textContent = res.likes.length;
+
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+			},
+
+			cardData.likes.length
+		);
+
+		//Генерируем и возвращаем HTML-элемент
+		return card.generateCard();
+	}
 
 	// ВКЛЮЧЕНИЕ ВАЛИДАЦИИ
 	// Валидация формы создания карточки

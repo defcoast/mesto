@@ -22,6 +22,7 @@ export default class Card {
     this._userId = userId;
     this._handleLike = likeCardCb;
     this._handleUnlike = unlikeCardCb;
+
   }
 
   _getTemplate() {
@@ -36,7 +37,7 @@ export default class Card {
 
     const cardTitle = this._element.querySelector('.photo-grid__title');
     const cardImage = this._element.querySelector('.photo-grid__image');
-    this._likesCountElement = this._element.querySelector('.photo-grid__like-count');
+    this.likesCountElement = this._element.querySelector('.photo-grid__like-count');
     this._likeBtn = this._element.querySelector('.photo-grid__like-btn');
 
     this._delBtn = this._element.querySelector('.photo-grid__del-btn');
@@ -52,7 +53,7 @@ export default class Card {
     cardTitle.textContent = this._name;
     cardImage.src = this._link;
     cardImage.alt = this._name;
-    this._likesCountElement.textContent = this._likesCount;
+    this.likesCountElement.textContent = this._likesCount;
 
     this._setEventListeners();
 
@@ -81,17 +82,9 @@ export default class Card {
 
     if (this._likeBtn.classList.contains('like-btn_active')) {
       this._handleLike(this._data);
-      this._likesCountElement.textContent = this._likesCount + 1;
     }
     else {
       this._handleUnlike(this._data);
-      let currentLikeCount = this._likesCount - 1;
-      if (currentLikeCount < 0) {
-        this._likesCountElement.textContent = 0;
-      }
-      else {
-        this._likesCountElement.textContent = currentLikeCount;
-      }
     }
 
   }
