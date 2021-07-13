@@ -100,7 +100,8 @@ Promise.all([
 
 		api.setUserInfo(profileData)
 		.then(() => {
-				userInfo.setUserInfo(profileData);
+			console.log(profileData)
+				userInfo.setUserInfo(profileData.username, profileData.userbio );
 				popupEditProfile.close();
 		})
 		.catch((err) => {

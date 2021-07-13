@@ -23,8 +23,12 @@ export class UserInfo {
   setUserInfo( username, userbio, userAvatar, userID ) {
     this._userNameElement.textContent = username;
     this._userBioElement.textContent = userbio;
-    this.setAvatar(userAvatar)
     this._userID = userID;
+
+    if (userAvatar) {
+      this.setAvatar(userAvatar);
+    }
+
   }
 
   setAvatar (userAvatar) {
